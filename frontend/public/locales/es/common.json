@@ -1,0 +1,39 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "tricks": "Trucos",
+    "guides": "Guías",
+    "news": "Noticias",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "hello": "Hola, {{name}}"
+  },
+  "hero": {
+    "title": "Mundo Roblox",
+    "subtitle": "Tu lugar para aprender y mejorar en el mundo Roblox",
+    "cta": "Ver artículos"
+  },
+  "auth": {
+    "name": "Nombre",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "logout": "Cerrar sesión",
+    "noAccount": "¿No tienes cuenta?",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "invalidCredentials": "El email o la contraseña son incorrectos."
+  },
+  "theme": {
+    "switchToDark": "Cambiar a modo oscuro",
+    "switchToLight": "Cambiar a modo claro"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados"
+  },
+  "errors": {
+    "notFound": "Página no encontrada",
+    "serverError": "Error del servidor. Inténtalo de nuevo."
+  }
+}

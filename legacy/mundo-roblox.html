@@ -1,0 +1,2832 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo Roblox - Profesional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee:wght@400;700;800&family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Reset y variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1e1e2f;
+            --bg-secondary: #2a2a3e;
+            --bg-card: #3a3a4e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8c8;
+            --accent-primary: #00ff88;
+            --accent-secondary: #00d4ff;
+            --accent-gradient: linear-gradient(135deg, #00ff88, #00d4ff);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            
+            /* Variables específicas para modales oscuros */
+            --modal-bg: #2a2a3d;
+            --modal-text: #ffffff;
+            --modal-text-secondary: #b8b8c8;
+            --modal-border: rgba(255, 255, 255, 0.15);
+            --modal-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            --modal-close-bg: rgba(255, 255, 255, 0.1);
+            --modal-close-hover: rgba(255, 107, 107, 0.2);
+        }
+
+        /* Light mode variables */
+        :root.light-mode {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-primary: #0066cc;
+            --accent-secondary: #004499;
+            --accent-gradient: linear-gradient(135deg, #0066cc, #004499);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            
+            --modal-bg: #ffffff;
+            --modal-text: #212529;
+            --modal-text-secondary: #6c757d;
+            --modal-border: rgba(0, 0, 0, 0.1);
+            --modal-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            --modal-close-bg: rgba(0, 0, 0, 0.05);
+            --modal-close-hover: rgba(220, 53, 69, 0.1);
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navegación */
+        .navbar {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 15px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle span {
+            font-size: 1.2rem;
+        }
+
+        .lang-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 15px;
+        }
+
+        .lang-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .lang-toggle span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            min-height: 40px;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .auth-btn {
+            background: var(--accent-gradient);
+            color: var(--bg-primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Estilos para área de autenticación mejorada */
+        .auth-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-greeting {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .logout-btn {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive para navegación */
+        @media (max-width: 1024px) {
+            .nav-controls {
+                gap: 10px;
+            }
+
+            .auth-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .user-greeting {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .logout-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-controls {
+                gap: 8px;
+            }
+
+            .theme-toggle, .lang-toggle {
+                padding: 6px 10px;
+                min-width: 36px;
+                min-height: 36px;
+            }
+
+            .auth-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .user-greeting {
+                font-size: 0.75rem;
+                padding: 5px 8px;
+            }
+
+            .logout-btn {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-controls {
+                gap: 6px;
+            }
+
+            .theme-toggle, .lang-toggle {
+                padding: 6px 8px;
+                min-width: 32px;
+                min-height: 32px;
+            }
+
+            .auth-btn {
+                display: none; /* Ocultar botón de auth en móviles muy pequeños */
+            }
+
+            .user-greeting {
+                font-size: 0.7rem;
+                padding: 4px 6px;
+            }
+
+            .logout-btn {
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+        }
+
+        /* Estilos para el menú de navegación */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-menu li {
+            margin: 0;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: block;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-link:active {
+            transform: translateY(0);
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 40px;
+        }
+
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .start-btn {
+            background: var(--accent-gradient);
+            color: var(--bg-primary);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Sección de artículos */
+        .articles-section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .card-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Optimización de imágenes responsive */
+        @media (max-width: 768px) {
+            .card-image {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-image {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .card-image {
+                height: 140px;
+            }
+        }
+
+        /* Imágenes reales de Roblox */
+        .robux-image { 
+            background: url('https://tr.rbxcdn.com/4f76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #00d4ff, #00ff88); 
+        }
+        .blox-image { 
+            background: url('https://tr.rbxcdn.com/5f76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #ff6b6b, #ffa500); 
+        }
+        .adopt-image { 
+            background: url('https://tr.rbxcdn.com/6f76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #ff69b4, #9370db); 
+        }
+        .studio-image { 
+            background: url('https://tr.rbxcdn.com/7f76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #4a90e2, #7b68ee); 
+        }
+        .trading-image { 
+            background: url('https://tr.rbxcdn.com/8f76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #f39c12, #e74c3c); 
+        }
+        .scripting-image { 
+            background: url('https://tr.rbxcdn.com/9f76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #27ae60, #16a085); 
+        }
+        .avatar-image { 
+            background: url('https://tr.rbxcdn.com/af76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #e91e63, #9c27b0); 
+        }
+        .games-image { 
+            background: url('https://tr.rbxcdn.com/bf76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #ff9800, #ff5722); 
+        }
+        .security-image { 
+            background: url('https://tr.rbxcdn.com/cf76b1d870a9623b1a3b6b5b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #607d8b, #455a64); 
+        }
+        .events-image { 
+            background: url('https://tr.rbxcdn.com/df76b1d870a9623b1a3b6b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #795548, #5d4037); 
+        }
+        .mobile-image { 
+            background: url('https://tr.rbxcdn.com/ef76b1d870a9623b1a3b6b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #00bcd4, #009688); 
+        }
+        .building-image { 
+            background: url('https://tr.rbxcdn.com/ff76b1d870a9623b1a3b6b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #ffeb3b, #ffc107); 
+        }
+        .social-image { 
+            background: url('https://tr.rbxcdn.com/0f76b1d870a9623b1a3b6b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #2196f3, #1976d2); 
+        }
+        .monetization-image { 
+            background: url('https://tr.rbxcdn.com/1f76b1d870a9623b1a3b6b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #8bc34a, #689f38); 
+        }
+        .performance-image { 
+            background: url('https://tr.rbxcdn.com/2f76b1d870a9623b1a3b6b5b5b5b') center/cover, 
+                        linear-gradient(135deg, #9e9e9e, #616161); 
+        }
+
+        .card-content {
+            padding: 30px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .card-title:hover {
+            color: var(--accent-primary);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .read-more-btn {
+            background: transparent;
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .read-more-btn:hover {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+
+        /* Modales con diseño oscuro */
+        .modal {
+            display: flex;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--modal-bg);
+            border: 1px solid var(--modal-border);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            transform: scale(0.9);
+            box-shadow: var(--modal-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: var(--modal-close-bg);
+            color: #ffffff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--modal-close-hover);
+            transform: scale(1.1);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--modal-text);
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-body {
+            line-height: 1.8;
+            color: var(--modal-text-secondary);
+        }
+
+        .modal-body p {
+            margin-bottom: 20px;
+        }
+
+        .modal-body ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        .modal-body li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .modal-body li::before {
+            content: '▸';
+            color: var(--accent-primary);
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+        }
+
+        .modal-body h3 {
+            color: var(--modal-text);
+            font-size: 1.3rem;
+            margin: 30px 0 15px 0;
+        }
+
+        .modal-body strong {
+            color: var(--accent-secondary);
+        }
+
+        .modal-contact-info {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .modal-contact-item {
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .modal-contact-item a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .modal-contact-item a:hover {
+            color: var(--accent-secondary);
+        }
+
+        .modal-action-btn {
+            background: var(--accent-gradient);
+            color: var(--bg-primary);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 25px;
+        }
+
+        .modal-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Formularios con diseño oscuro */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--modal-border);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: var(--modal-text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: var(--accent-primary);
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--modal-text);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--modal-border);
+            border-radius: 8px;
+            color: var(--modal-text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--modal-text-secondary);
+        }
+
+        .auth-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .auth-message.success {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .auth-message.error {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.2);
+        }
+
+        .auth-message.show {
+            display: block;
+        }
+
+        /* Language Selector Modal */
+        .lang-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .lang-modal.active {
+            opacity: 1;
+            visibility: visible;
+            display: flex;
+        }
+
+        .lang-modal-content {
+            background: var(--modal-bg);
+            border: 1px solid var(--modal-border);
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            overflow: hidden;
+            transform: scale(0.9);
+            box-shadow: var(--modal-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .lang-modal.active .lang-modal-content {
+            transform: scale(1);
+        }
+
+        .lang-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--modal-border);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .lang-modal-header h3 {
+            color: var(--modal-text);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .lang-modal-close {
+            background: transparent;
+            border: none;
+            color: var(--modal-text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .lang-modal-close:hover {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        .lang-modal-body {
+            padding: 15px 0;
+        }
+
+        .lang-option {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 15px;
+            color: var(--modal-text);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .lang-option:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .lang-option.active {
+            background: rgba(0, 255, 136, 0.15);
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .flag {
+            font-size: 1.5rem;
+        }
+
+        .lang-name {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* Responsive para modales */
+        @media (max-width: 768px) {
+            .lang-modal-content {
+                max-width: 350px;
+                width: 95%;
+            }
+
+            .lang-modal-header {
+                padding: 15px 20px;
+            }
+
+            .lang-modal-header h3 {
+                font-size: 1.1rem;
+            }
+
+            .lang-option {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .flag {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lang-modal-content {
+                max-width: 300px;
+                width: 90%;
+            }
+
+            .lang-modal-header {
+                padding: 12px 15px;
+            }
+
+            .lang-modal-header h3 {
+                font-size: 1rem;
+            }
+
+            .lang-option {
+                padding: 10px 15px;
+                font-size: 0.85rem;
+                gap: 10px;
+            }
+
+            .flag {
+                font-size: 1rem;
+            }
+
+            .lang-modal-close {
+                width: 25px;
+                height: 25px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Responsive Design */
+
+        /* Desktop (pantallas grandes) */
+        @media (min-width: 769px) {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 100px 20px 40px;
+            }
+
+            .cards-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
+            }
+
+            .nav-menu {
+                display: flex;
+                position: static;
+                flex-direction: row;
+                background: none;
+                width: auto;
+                text-align: left;
+                padding: 0;
+                box-shadow: none;
+                gap: 20px; /* Mantener espaciado en desktop */
+            }
+
+            .nav-toggle {
+                display: none;
+            }
+
+            .nav-controls {
+                gap: 12px;
+            }
+
+            .theme-toggle, .lang-toggle {
+                padding: 8px 12px;
+                min-width: 40px;
+                min-height: 40px;
+            }
+
+            .auth-btn {
+                display: block;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Tablet (pantallas medianas) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Móvil (pantallas pequeñas) */
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 15px 30px;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: var(--bg-secondary);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 20px 0;
+                box-shadow: var(--shadow);
+                z-index: 999;
+                gap: 10px; /* Espaciado reducido para móvil */
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .nav-toggle.active .bar:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .nav-toggle.active .bar:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .nav-controls {
+                gap: 8px;
+            }
+
+            .theme-toggle, .lang-toggle {
+                padding: 6px 10px;
+                min-width: 36px;
+                min-height: 36px;
+            }
+
+            .auth-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Móvil pequeño */
+        @media (max-width: 480px) {
+            .container {
+                padding: 80px 10px 20px;
+            }
+
+            .nav-container {
+                padding: 0 10px;
+            }
+
+            .nav-logo {
+                font-size: 1.2rem;
+            }
+
+            .card-content {
+                padding: 15px;
+            }
+
+            .modal-content {
+                padding: 25px 15px;
+                margin: 10px;
+            }
+
+            .modal-title {
+                font-size: 1.3rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .start-btn {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .card-description {
+                font-size: 0.9rem;
+            }
+
+            .read-more-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .nav-controls {
+                gap: 6px;
+            }
+
+            .theme-toggle, .lang-toggle {
+                padding: 6px 8px;
+                min-width: 32px;
+                min-height: 32px;
+            }
+
+            .auth-btn {
+                display: none;
+            }
+
+            .card-image {
+                height: 160px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-gradient);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Mundo Roblox</div>
+            <ul class="nav-menu">
+                <li><a class="nav-link" data-modal="inicio" data-i18n="nav.inicio">Inicio</a></li>
+                <li><a class="nav-link" data-modal="trucos" data-i18n="nav.trucos">Trucos</a></li>
+                <li><a class="nav-link" data-modal="guias" data-i18n="nav.guias">Guías</a></li>
+                <li><a class="nav-link" data-modal="noticias" data-i18n="nav.noticias">Noticias</a></li>
+                <li><a class="nav-link" data-modal="contacto" data-i18n="nav.contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle" title="Cambiar tema">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <button class="lang-toggle" id="langToggle" title="Cambiar idioma">
+                    <span id="langText">ES</span>
+                </button>
+                
+                <!-- Área de autenticación para usuario no logueado -->
+                <div class="auth-area" id="authAreaLoggedOut">
+                    <button class="auth-btn" id="authBtn" data-i18n="nav.auth">Crear cuenta / Iniciar sesión</button>
+                </div>
+                
+                <!-- Área de autenticación para usuario logueado -->
+                <div class="auth-area" id="authAreaLoggedIn" style="display: none;">
+                    <span class="user-greeting" id="userGreeting">Hola, usuario</span>
+                    <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+                </div>
+            </div>
+            <div class="nav-toggle" id="mobileMenu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header class="hero">
+            <h1 class="main-title" data-i18n="hero.title">Mundo Roblox</h1>
+            <p class="hero-subtitle" data-i18n="hero.subtitle">Tu lugar para aprender y mejorar en el mundo Roblox</p>
+            <button class="start-btn" id="startBtn" data-i18n="hero.start">Empezar</button>
+        </header>
+        
+        <section class="articles-section">
+            <h2 class="section-title" data-i18n="articles.title">Artículos Destacados</h2>
+            <div class="cards-container">
+                <!-- Artículo 1 -->
+                <article class="card">
+                    <div class="card-image robux-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-robux" data-i18n="articles.robux.title">5 trucos secretos para conseguir Robux rápido</h3>
+                        <p class="card-description" data-i18n="articles.robux.description">Aprende cómo obtener Robux gratis de forma legal y mejorar tu juego.</p>
+                        <button class="read-more-btn" data-article="robux" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 2 -->
+                <article class="card">
+                    <div class="card-image blox-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-blox" data-i18n="articles.blox.title">Sube de nivel rápido en Blox Fruits</h3>
+                        <p class="card-description" data-i18n="articles.blox.description">Guía paso a paso para avanzar en Blox Fruits y dominar los niveles.</p>
+                        <button class="read-more-btn" data-article="blox" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 3 -->
+                <article class="card">
+                    <div class="card-image adopt-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-adopt" data-i18n="articles.adopt.title">Las mejores mascotas de Adopt Me y cómo conseguirlas</h3>
+                        <p class="card-description" data-i18n="articles.adopt.description">Todo sobre las mascotas raras de Adopt Me y dónde encontrarlas.</p>
+                        <button class="read-more-btn" data-article="adopt" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 4 -->
+                <article class="card">
+                    <div class="card-image studio-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-studio" data-i18n="articles.studio.title">Guía completa de Roblox Studio para principiantes</h3>
+                        <p class="card-description" data-i18n="articles.studio.description">Aprende a crear tus propios juegos desde cero con herramientas profesionales.</p>
+                        <button class="read-more-btn" data-article="studio" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 5 -->
+                <article class="card">
+                    <div class="card-image trading-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-trading" data-i18n="articles.trading.title">Master del Trading: Cómo negociar como un profesional</h3>
+                        <p class="card-description" data-i18n="articles.trading.description">Estrategias avanzadas para maximizar tus ganancias en el marketplace.</p>
+                        <button class="read-more-btn" data-article="trading" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 6 -->
+                <article class="card">
+                    <div class="card-image scripting-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-scripting" data-i18n="articles.scripting.title">Programación en Lua: Scripts esenciales para tu juego</h3>
+                        <p class="card-description" data-i18n="articles.scripting.description">Aprende los fundamentos de scripting y crea mecánicas increíbles.</p>
+                        <button class="read-more-btn" data-article="scripting" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 7 -->
+                <article class="card">
+                    <div class="card-image avatar-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-avatar" data-i18n="articles.avatar.title">Personalización Avatar: Crea un estilo único</h3>
+                        <p class="card-description" data-i18n="articles.avatar.description">Descubre cómo personalizar tu avatar con outfits y accesorios exclusivos.</p>
+                        <button class="read-more-btn" data-article="avatar" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 8 -->
+                <article class="card">
+                    <div class="card-image games-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-games" data-i18n="articles.games.title">Top 10 juegos populares que debes probar ahora</h3>
+                        <p class="card-description" data-i18n="articles.games.description">Los mejores juegos de Roblox con guías rápidas para empezar.</p>
+                        <button class="read-more-btn" data-article="games" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 9 -->
+                <article class="card">
+                    <div class="card-image security-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-security" data-i18n="articles.security.title">Guía de seguridad: Protege tu cuenta de hackers</h3>
+                        <p class="card-description" data-i18n="articles.security.description">Consejos esenciales para mantener tu cuenta Roblox segura.</p>
+                        <button class="read-more-btn" data-article="security" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 10 -->
+                <article class="card">
+                    <div class="card-image events-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-events" data-i18n="articles.events.title">Eventos especiales: No te pierdas recompensas exclusivas</h3>
+                        <p class="card-description" data-i18n="articles.events.description">Calendario de eventos y cómo aprovechar cada oportunidad.</p>
+                        <button class="read-more-btn" data-article="events" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 11 -->
+                <article class="card">
+                    <div class="card-image mobile-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-mobile" data-i18n="articles.mobile.title">Roblox Mobile: Optimiza tu experiencia móvil</h3>
+                        <p class="card-description" data-i18n="articles.mobile.description">Configuraciones y trucos para jugar Roblox en tu teléfono.</p>
+                        <button class="read-more-btn" data-article="mobile" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 12 -->
+                <article class="card">
+                    <div class="card-image building-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-building" data-i18n="articles.building.title">Arquitectura Roblox: Construye mundos impresionantes</h3>
+                        <p class="card-description" data-i18n="articles.building.description">Técnicas avanzadas de construcción y diseño de mapas.</p>
+                        <button class="read-more-btn" data-article="building" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 13 -->
+                <article class="card">
+                    <div class="card-image social-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-social" data-i18n="articles.social.title">Comunidad Roblox: Crea amigos y únete a grupos</h3>
+                        <p class="card-description" data-i18n="articles.social.description">Cómo socializar y encontrar jugadores con tus mismos intereses.</p>
+                        <button class="read-more-btn" data-article="social" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 14 -->
+                <article class="card">
+                    <div class="card-image monetization-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-monetization" data-i18n="articles.monetization.title">Monetización: Gana dinero con tus creaciones</h3>
+                        <p class="card-description" data-i18n="articles.monetization.description">Estrategias para convertir tus juegos en una fuente de ingresos.</p>
+                        <button class="read-more-btn" data-article="monetization" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+                
+                <!-- Artículo 15 -->
+                <article class="card">
+                    <div class="card-image performance-image"></div>
+                    <div class="card-content">
+                        <h3 class="card-title" id="articulo-performance" data-i18n="articles.performance.title">Optimización: Mejora el rendimiento de tu juego</h3>
+                        <p class="card-description" data-i18n="articles.performance.description">Técnicas para que tu juego corra fluido en todos los dispositivos.</p>
+                        <button class="read-more-btn" data-article="performance" data-i18n="articles.readMore">Leer más</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Language Selector Modal -->
+    <div class="lang-modal" id="langModal">
+        <div class="lang-modal-content">
+            <div class="lang-modal-header">
+                <h3>Seleccionar Idioma</h3>
+                <span class="lang-modal-close" id="langModalClose">&times;</span>
+            </div>
+            <div class="lang-modal-body">
+                <button class="lang-option" data-lang="es">
+                    <span class="flag">🇪🇸</span>
+                    <span class="lang-name">Español</span>
+                </button>
+                <button class="lang-option" data-lang="en">
+                    <span class="flag">🇬🇧</span>
+                    <span class="lang-name">English</span>
+                </button>
+                <button class="lang-option" data-lang="fr">
+                    <span class="flag">🇫🇷</span>
+                    <span class="lang-name">Français</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de traducciones
+        const translations = {
+            es: {
+                nav: {
+                    inicio: 'Inicio',
+                    trucos: 'Trucos',
+                    guias: 'Guías',
+                    noticias: 'Noticias',
+                    contacto: 'Contacto',
+                    auth: 'Crear cuenta / Iniciar sesión'
+                },
+                hero: {
+                    title: 'Mundo Roblox',
+                    subtitle: 'Tu lugar para aprender y mejorar en el mundo Roblox',
+                    start: 'Empezar'
+                },
+                articles: {
+                    title: 'Artículos Destacados',
+                    readMore: 'Leer más',
+                    robux: {
+                        title: '5 trucos secretos para conseguir Robux rápido',
+                        description: 'Aprende cómo obtener Robux gratis de forma legal y mejorar tu juego.'
+                    },
+                    blox: {
+                        title: 'Sube de nivel rápido en Blox Fruits',
+                        description: 'Guía paso a paso para avanzar en Blox Fruits y dominar los niveles.'
+                    },
+                    adopt: {
+                        title: 'Las mejores mascotas de Adopt Me y cómo conseguirlas',
+                        description: 'Todo sobre las mascotas raras de Adopt Me y dónde encontrarlas.'
+                    },
+                    studio: {
+                        title: 'Guía completa de Roblox Studio para principiantes',
+                        description: 'Aprende a crear tus propios juegos desde cero con herramientas profesionales.'
+                    },
+                    trading: {
+                        title: 'Master del Trading: Cómo negociar como un profesional',
+                        description: 'Estrategias avanzadas para maximizar tus ganancias en el marketplace.'
+                    },
+                    scripting: {
+                        title: 'Programación en Lua: Scripts esenciales para tu juego',
+                        description: 'Aprende los fundamentos de scripting y crea mecánicas increíbles.'
+                    },
+                    avatar: {
+                        title: 'Personalización Avatar: Crea un estilo único',
+                        description: 'Descubre cómo personalizar tu avatar con outfits y accesorios exclusivos.'
+                    },
+                    games: {
+                        title: 'Top 10 juegos populares que debes probar ahora',
+                        description: 'Los mejores juegos de Roblox con guías rápidas para empezar.'
+                    },
+                    security: {
+                        title: 'Guía de seguridad: Protege tu cuenta de hackers',
+                        description: 'Consejos esenciales para mantener tu cuenta Roblox segura.'
+                    },
+                    events: {
+                        title: 'Eventos especiales: No te pierdas recompensas exclusivas',
+                        description: 'Calendario de eventos y cómo aprovechar cada oportunidad.'
+                    },
+                    mobile: {
+                        title: 'Roblox Mobile: Optimiza tu experiencia móvil',
+                        description: 'Configuraciones y trucos para jugar Roblox en tu teléfono.'
+                    },
+                    building: {
+                        title: 'Arquitectura Roblox: Construye mundos impresionantes',
+                        description: 'Técnicas avanzadas de construcción y diseño de mapas.'
+                    },
+                    social: {
+                        title: 'Comunidad Roblox: Crea amigos y únete a grupos',
+                        description: 'Cómo socializar y encontrar jugadores con tus mismos intereses.'
+                    },
+                    monetization: {
+                        title: 'Monetización: Gana dinero con tus creaciones',
+                        description: 'Estrategias para convertir tus juegos en una fuente de ingresos.'
+                    },
+                    performance: {
+                        title: 'Optimización: Mejora el rendimiento de tu juego',
+                        description: 'Técnicas para que tu juego corra fluido en todos los dispositivos.'
+                    }
+                },
+                modals: {
+                    close: 'Cerrar',
+                    share: 'Compartir artículo',
+                    login: 'Iniciar sesión',
+                    register: 'Crear cuenta',
+                    email: 'Email',
+                    password: 'Contraseña',
+                    confirmPassword: 'Confirmar contraseña',
+                    loginSuccess: '¡Bienvenido de nuevo! Has iniciado sesión correctamente.',
+                    registerSuccess: '¡Cuenta creada exitosamente! Revisa tu email para verificar.',
+                    passwordMismatch: 'Las contraseñas no coinciden.'
+                }
+            },
+            en: {
+                nav: {
+                    inicio: 'Home',
+                    trucos: 'Tricks',
+                    guias: 'Guides',
+                    noticias: 'News',
+                    contacto: 'Contact',
+                    auth: 'Create Account / Sign In'
+                },
+                hero: {
+                    title: 'Mundo Roblox',
+                    subtitle: 'Your place to learn and improve in the Roblox world',
+                    start: 'Get Started'
+                },
+                articles: {
+                    title: 'Featured Articles',
+                    readMore: 'Read More',
+                    robux: {
+                        title: '5 secret tricks to get Robux fast',
+                        description: 'Learn how to get free Robux legally and improve your game.'
+                    },
+                    blox: {
+                        title: 'Level up fast in Blox Fruits',
+                        description: 'Step-by-step guide to advance in Blox Fruits and master the levels.'
+                    },
+                    adopt: {
+                        title: 'The best Adopt Me pets and how to get them',
+                        description: 'All about rare Adopt Me pets and where to find them.'
+                    },
+                    studio: {
+                        title: 'Complete Roblox Studio guide for beginners',
+                        description: 'Learn to create your own games from scratch with professional tools.'
+                    },
+                    trading: {
+                        title: 'Trading Master: How to negotiate like a pro',
+                        description: 'Advanced strategies to maximize your earnings in the marketplace.'
+                    },
+                    scripting: {
+                        title: 'Lua Programming: Essential scripts for your game',
+                        description: 'Learn scripting fundamentals and create amazing mechanics.'
+                    },
+                    avatar: {
+                        title: 'Avatar Customization: Create a unique style',
+                        description: 'Discover how to customize your avatar with exclusive outfits and accessories.'
+                    },
+                    games: {
+                        title: 'Top 10 popular games you should play now',
+                        description: 'The best Roblox games with quick start guides.'
+                    },
+                    security: {
+                        title: 'Security Guide: Protect your account from hackers',
+                        description: 'Essential tips to keep your Roblox account safe.'
+                    },
+                    events: {
+                        title: 'Special Events: Don\'t miss exclusive rewards',
+                        description: 'Event calendar and how to take advantage of every opportunity.'
+                    },
+                    mobile: {
+                        title: 'Roblox Mobile: Optimize your mobile experience',
+                        description: 'Settings and tricks to play Roblox on your phone.'
+                    },
+                    building: {
+                        title: 'Roblox Architecture: Build impressive worlds',
+                        description: 'Advanced building and map design techniques.'
+                    },
+                    social: {
+                        title: 'Roblox Community: Make friends and join groups',
+                        description: 'How to socialize and find players with similar interests.'
+                    },
+                    monetization: {
+                        title: 'Monetization: Earn money with your creations',
+                        description: 'Strategies to turn your games into an income source.'
+                    },
+                    performance: {
+                        title: 'Optimization: Improve your game\'s performance',
+                        description: 'Techniques to make your game run smoothly on all devices.'
+                    }
+                },
+                modals: {
+                    close: 'Close',
+                    share: 'Share Article',
+                    login: 'Sign In',
+                    register: 'Create Account',
+                    email: 'Email',
+                    password: 'Password',
+                    confirmPassword: 'Confirm Password',
+                    loginSuccess: 'Welcome back! You have successfully signed in.',
+                    registerSuccess: 'Account created successfully! Check your email to verify.',
+                    passwordMismatch: 'Passwords do not match.'
+                }
+            },
+            fr: {
+                nav: {
+                    inicio: 'Accueil',
+                    trucos: 'Astuces',
+                    guias: 'Guides',
+                    noticias: 'Actualités',
+                    contacto: 'Contact',
+                    auth: 'Créer un compte / Se connecter'
+                },
+                hero: {
+                    title: 'Mundo Roblox',
+                    subtitle: 'Votre lieu pour apprendre et améliorer dans le monde Roblox',
+                    start: 'Commencer'
+                },
+                articles: {
+                    title: 'Articles en vedette',
+                    readMore: 'Lire plus',
+                    robux: {
+                        title: '5 astuces secrètes pour obtenir des Robux rapidement',
+                        description: 'Apprenez à obtenir des Robux gratuits légalement et améliorer votre jeu.'
+                    },
+                    blox: {
+                        title: 'Montez de niveau rapidement dans Blox Fruits',
+                        description: 'Guide étape par étape pour progresser dans Blox Fruits et maîtriser les niveaux.'
+                    },
+                    adopt: {
+                        title: 'Les meilleurs animaux Adopt Me et comment les obtenir',
+                        description: 'Tout sur les animaux rares Adopt Me et où les trouver.'
+                    },
+                    studio: {
+                        title: 'Guide complet de Roblox Studio pour débutants',
+                        description: 'Apprenez à créer vos propres jeux à partir de zéro avec des outils professionnels.'
+                    },
+                    trading: {
+                        title: 'Maître du Trading: Comment négocier comme un professionnel',
+                        description: 'Stratégies avancées pour maximiser vos gains sur le marketplace.'
+                    },
+                    scripting: {
+                        title: 'Programmation Lua: Scripts essentiels pour votre jeu',
+                        description: 'Apprenez les fondamentaux du scripting et créez des mécaniques incroyables.'
+                    },
+                    avatar: {
+                        title: 'Personnalisation Avatar: Créez un style unique',
+                        description: 'Découvrez comment personnaliser votre avatar avec des tenues et accessoires exclusifs.'
+                    },
+                    games: {
+                        title: 'Top 10 jeux populaires à essayer maintenant',
+                        description: 'Les meilleurs jeux Roblox avec des guides de démarrage rapides.'
+                    },
+                    security: {
+                        title: 'Guide de Sécurité: Protégez votre compte des pirates',
+                        description: 'Conseils essentiels pour maintenir votre compte Roblox en sécurité.'
+                    },
+                    events: {
+                        title: 'Événements Spéciaux: Ne manquez pas les récompenses exclusives',
+                        description: 'Calendrier des événements et comment profiter de chaque opportunité.'
+                    },
+                    mobile: {
+                        title: 'Roblox Mobile: Optimisez votre expérience mobile',
+                        description: 'Paramètres et astuces pour jouer à Roblox sur votre téléphone.'
+                    },
+                    building: {
+                        title: 'Architecture Roblox: Construisez des mondes impressionnants',
+                        description: 'Techniques avancées de construction et de design de cartes.'
+                    },
+                    social: {
+                        title: 'Communauté Roblox: Créez des amis et rejoignez des groupes',
+                        description: 'Comment socialiser et trouver des joueurs avec des intérêts similaires.'
+                    },
+                    monetization: {
+                        title: 'Monétisation: Gagnez de l\'argent avec vos créations',
+                        description: 'Stratégies pour transformer vos jeux en source de revenus.'
+                    },
+                    performance: {
+                        title: 'Optimisation: Améliorez les performances de votre jeu',
+                        description: 'Techniques pour que votre jeu fonctionne parfaitement sur tous les appareils.'
+                    }
+                },
+                modals: {
+                    close: 'Fermer',
+                    share: 'Partager l\'article',
+                    login: 'Se connecter',
+                    register: 'Créer un compte',
+                    email: 'Email',
+                    password: 'Mot de passe',
+                    confirmPassword: 'Confirmer le mot de passe',
+                    loginSuccess: 'Bon retour! Vous vous êtes connecté avec succès.',
+                    registerSuccess: 'Compte créé avec succès! Vérifiez votre email.',
+                    passwordMismatch: 'Les mots de passe ne correspondent pas.'
+                }
+            }
+        };
+
+        // Sistema de tema e idioma
+        class ThemeLanguageSystem {
+            constructor() {
+                this.currentLang = localStorage.getItem('language') || 'es';
+                this.currentTheme = localStorage.getItem('theme') || 'dark';
+                this.init();
+            }
+
+            init() {
+                this.applyTheme();
+                this.applyLanguage();
+                this.setupEventListeners();
+            }
+
+            applyTheme() {
+                const root = document.documentElement;
+                const themeIcon = document.getElementById('themeIcon');
+                
+                if (this.currentTheme === 'light') {
+                    root.classList.add('light-mode');
+                    themeIcon.textContent = '☀️';
+                } else {
+                    root.classList.remove('light-mode');
+                    themeIcon.textContent = '🌙';
+                }
+            }
+
+            applyLanguage() {
+                const langText = document.getElementById('langText');
+                const html = document.documentElement;
+                
+                langText.textContent = this.currentLang.toUpperCase();
+                html.lang = this.currentLang;
+                
+                // Actualizar todos los elementos con data-i18n
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const value = this.getTranslation(key);
+                    
+                    if (value) {
+                        element.textContent = value;
+                    }
+                });
+
+                // Actualizar contenido estático (para compatibilidad)
+                this.updateStaticContent();
+            }
+
+            updateStaticContent() {
+                // Este método ahora es redundante ya que todos los elementos usan data-i18n
+                // Se mantiene por compatibilidad con el sistema de modales
+                const t = translations[this.currentLang];
+                
+                // Actualizar título del modal de idioma si existe
+                const modalTitle = document.querySelector('.lang-modal-header h3');
+                if (modalTitle) {
+                    const titles = {
+                        es: 'Seleccionar Idioma',
+                        en: 'Select Language',
+                        fr: 'Sélectionner la langue'
+                    };
+                    modalTitle.textContent = titles[this.currentLang] || 'Select Language';
+                }
+            }
+
+            setupEventListeners() {
+                // Theme toggle
+                document.getElementById('themeToggle').addEventListener('click', () => {
+                    this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme', this.currentTheme);
+                    this.applyTheme();
+                });
+
+                // Language toggle - abrir modal de selección
+                document.getElementById('langToggle').addEventListener('click', () => {
+                    this.openLanguageModal();
+                });
+            }
+
+            getTranslation(key) {
+                const keys = key.split('.');
+                let value = translations[this.currentLang];
+                
+                for (const k of keys) {
+                    if (value && typeof value === 'object' && k in value) {
+                        value = value[k];
+                    } else {
+                        return key; // Devolver la clave si no se encuentra la traducción
+                    }
+                }
+                
+                return value || key;
+            }
+
+            openLanguageModal() {
+                const modal = document.getElementById('langModal');
+                modal.classList.add('active');
+                this.setupLanguageModalListeners();
+                this.updateLanguageModalUI();
+            }
+
+            closeLanguageModal() {
+                const modal = document.getElementById('langModal');
+                modal.classList.remove('active');
+            }
+
+            setupLanguageModalListeners() {
+                // Cerrar modal con la X
+                document.getElementById('langModalClose').addEventListener('click', () => {
+                    this.closeLanguageModal();
+                });
+
+                // Cerrar modal al hacer clic fuera
+                document.getElementById('langModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'langModal') {
+                        this.closeLanguageModal();
+                    }
+                });
+
+                // Opciones de idioma
+                document.querySelectorAll('.lang-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        const lang = option.dataset.lang;
+                        this.changeLanguage(lang);
+                        this.closeLanguageModal();
+                    });
+                });
+            }
+
+            updateLanguageModalUI() {
+                // Actualizar el estado activo de las opciones
+                document.querySelectorAll('.lang-option').forEach(option => {
+                    option.classList.remove('active');
+                    if (option.dataset.lang === this.currentLang) {
+                        option.classList.add('active');
+                    }
+                });
+
+                // Actualizar el título del modal según el idioma actual
+                const modalTitle = document.querySelector('.lang-modal-header h3');
+                const titles = {
+                    es: 'Seleccionar Idioma',
+                    en: 'Select Language',
+                    fr: 'Sélectionner la langue'
+                };
+                modalTitle.textContent = titles[this.currentLang] || 'Select Language';
+            }
+
+            changeLanguage(lang) {
+                this.currentLang = lang;
+                localStorage.setItem('language', lang);
+                this.applyLanguage();
+            }
+        }
+
+        // Sistema de modales
+        class ModalSystem {
+            constructor() {
+                this.modal = document.getElementById('modal');
+                this.modalTitle = document.getElementById('modalTitle');
+                this.modalBody = document.getElementById('modalBody');
+                this.modalClose = document.getElementById('modalClose');
+                this.themeLangSystem = new ThemeLanguageSystem();
+                this.init();
+            }
+
+            init() {
+                // Event listeners
+                this.modalClose.addEventListener('click', () => this.close());
+                this.modal.addEventListener('click', (e) => {
+                    if (e.target === this.modal) this.close();
+                });
+
+                // Navegación
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const modalType = link.dataset.modal;
+                        console.log('Clicked modal type:', modalType); // Debug
+                        if (modalType) {
+                            this.openNavModal(modalType);
+                        }
+                    });
+                });
+
+                // Artículos
+                document.querySelectorAll('.read-more-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const articleId = btn.dataset.article;
+                        if (articleId) {
+                            this.openArticleModal(articleId);
+                        }
+                    });
+                });
+
+                // Botón Empezar
+                document.getElementById('startBtn').addEventListener('click', () => {
+                    this.openNavModal('inicio');
+                });
+
+                // Botón de autenticación
+                document.getElementById('authBtn').addEventListener('click', () => {
+                    this.openAuthModal();
+                });
+            }
+
+            show() {
+                this.modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            close() {
+                this.modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+
+            openNavModal(type) {
+                const content = navContent[type];
+                console.log('Opening modal for type:', type); // Debug
+                console.log('Content found:', content); // Debug
+                
+                if (!content) {
+                    console.error('No content found for type:', type);
+                    return;
+                }
+                
+                // Obtener el título según el idioma actual
+                const title = typeof content.title === 'object' 
+                    ? content.title[this.themeLangSystem.currentLang] 
+                    : content.title;
+                
+                this.modalTitle.textContent = title;
+                this.modalBody.innerHTML = this.getTranslatedContent(content.content) + 
+                    `<button class="modal-action-btn">${this.themeLangSystem.getTranslation('modals.close')}</button>`;
+                this.addCloseButtonListener();
+                this.show();
+            }
+
+            openArticleModal(articleId) {
+                const article = articles[articleId];
+                this.modalTitle.textContent = article.title;
+                this.modalBody.innerHTML = article.content + 
+                    `<button class="modal-action-btn">${this.themeLangSystem.getTranslation('modals.share')}</button>`;
+                this.addShareButtonListener();
+                this.show();
+            }
+
+            openAuthModal() {
+                this.modalTitle.textContent = '🔐 ' + this.themeLangSystem.getTranslation('nav.auth');
+                this.modalBody.innerHTML = `
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" data-tab="login">${this.themeLangSystem.getTranslation('modals.login')}</button>
+                        <button class="auth-tab" data-tab="register">${this.themeLangSystem.getTranslation('modals.register')}</button>
+                    </div>
+                    
+                    <form class="auth-form active" id="loginForm">
+                        <div class="form-group">
+                            <label class="form-label">${this.themeLangSystem.getTranslation('modals.email')}</label>
+                            <input type="email" class="form-input" id="loginEmail" placeholder="tu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${this.themeLangSystem.getTranslation('modals.password')}</label>
+                            <input type="password" class="form-input" id="loginPassword" placeholder="•••••••••••••" required>
+                        </div>
+                        <button type="submit" class="modal-action-btn">${this.themeLangSystem.getTranslation('modals.login')}</button>
+                    </form>
+                    
+                    <form class="auth-form" id="registerForm">
+                        <div class="form-group">
+                            <label class="form-label">${this.themeLangSystem.getTranslation('modals.email')}</label>
+                            <input type="email" class="form-input" id="registerEmail" placeholder="tu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${this.themeLangSystem.getTranslation('modals.password')}</label>
+                            <input type="password" class="form-input" id="registerPassword" placeholder="••••••••••••••" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${this.themeLangSystem.getTranslation('modals.confirmPassword')}</label>
+                            <input type="password" class="form-input" id="confirmPassword" placeholder="•••••••••••••" required>
+                        </div>
+                        <button type="submit" class="modal-action-btn">${this.themeLangSystem.getTranslation('modals.register')}</button>
+                    </form>
+                    
+                    <div class="auth-message" id="authMessage"></div>
+                `;
+                this.setupAuthForms();
+                this.show();
+            }
+
+            getTranslatedContent(content) {
+                // Simplificado - en una implementación completa se traduciría todo el contenido
+                return content;
+            }
+
+            setupAuthForms() {
+                const tabs = this.modal.querySelectorAll('.auth-tab');
+                const forms = this.modal.querySelectorAll('.auth-form');
+                const messageEl = this.modal.querySelector('#authMessage');
+                const authService = new AuthService();
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const tabName = tab.dataset.tab;
+                        
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        forms.forEach(f => f.classList.remove('active'));
+                        this.modal.querySelector(`#${tabName}Form`).classList.add('active');
+                        
+                        messageEl.classList.remove('show');
+                    });
+                });
+
+                // Login form
+                this.modal.querySelector('#loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('loginEmail').value;
+                    const password = document.getElementById('loginPassword').value;
+                    
+                    if (email && password) {
+                        const result = authService.login(email, password);
+                        
+                        if (result.success) {
+                            this.showMessage('success', result.message);
+                            setTimeout(() => this.close(), 2000);
+                        } else {
+                            this.showMessage('error', result.message);
+                        }
+                    }
+                });
+
+                // Register form
+                this.modal.querySelector('#registerForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('registerEmail').value;
+                    const password = document.getElementById('registerPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    if (password !== confirmPassword) {
+                        this.showMessage('error', this.themeLangSystem.getTranslation('modals.passwordMismatch'));
+                        return;
+                    }
+                    
+                    if (email && password) {
+                        const result = authService.register(email, password);
+                        
+                        if (result.success) {
+                            this.showMessage('success', result.message);
+                            setTimeout(() => this.close(), 2000);
+                        } else {
+                            this.showMessage('error', result.message);
+                        }
+                    }
+                });
+            }
+
+            showMessage(type, text) {
+                const messageEl = this.modal.querySelector('#authMessage');
+                messageEl.textContent = text;
+                messageEl.className = `auth-message ${type} show`;
+            }
+
+            addCloseButtonListener() {
+                const closeBtn = this.modal.querySelector('.modal-action-btn');
+                closeBtn.addEventListener('click', () => this.close());
+            }
+
+            addShareButtonListener() {
+                const shareBtn = this.modal.querySelector('.modal-action-btn');
+                shareBtn.addEventListener('click', () => {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: this.modalTitle.textContent,
+                            text: '¡Mira este artículo increíble de Mundo Roblox!',
+                            url: window.location.href
+                        });
+                    } else {
+                        this.showMessage('success', '¡Enlace copiado al portapapeles!');
+                    }
+                });
+            }
+        }
+
+        // Contenido de navegación
+        const navContent = {
+            inicio: {
+                title: {
+                    es: '🏠 Bienvenido a Mundo Roblox',
+                    en: '🏠 Welcome to Mundo Roblox',
+                    fr: '🏠 Bienvenue dans Mundo Roblox'
+                },
+                content: `
+                    <p>Mundo Roblox es tu portal definitivo para dominar el mundo de Roblox. Aquí encontrarás todo lo que necesitas para convertirte en un experto.</p>
+                    <h3>🎮 ¿Qué encontrarás en nuestra web?</h3>
+                    <ul>
+                        <li><strong>Guías completas</strong> para principiantes y expertos</li>
+                        <li><strong>Trucos y secretos</strong> para avanzar más rápido</li>
+                        <li><strong>Noticias actualizadas</strong> del mundo Roblox</li>
+                        <li><strong>Tutoriales de programación</strong> en Lua</li>
+                        <li><strong>Estrategias de monetización</strong> para creadores</li>
+                    </ul>
+                    <h3>🚀 Comienza tu aventura</h3>
+                    <p>Explora nuestros artículos, únete a la comunidad y lleva tus habilidades de Roblox al siguiente nivel. ¡El límite es tu imaginación!</p>
+                    <div class="modal-contact-info">
+                        <div class="modal-contact-item">📧 tomasribes11@gmail.com</div>
+                    </div>
+                `
+            },
+            trucos: {
+                title: {
+                    es: '🎯 Trucos y Secretos',
+                    en: '🎯 Tricks and Secrets',
+                    fr: '🎯 Astuces et Secrets'
+                },
+                content: `
+                    <p>Descubre los trucos más guardados y secretos que te darán ventaja en Roblox.</p>
+                    <h3>💎 Trucos para Robux</h3>
+                    <ul>
+                        <li>Completa misiones diarias para ganar hasta 100 Robux</li>
+                        <li>Participa en eventos de temporada con recompensas exclusivas</li>
+                        <li>Crea y vende accesorios únicos en el marketplace</li>
+                        <li>Únete a grupos premium con beneficios especiales</li>
+                    </ul>
+                    <h3>⚡ Trucos de juego</h3>
+                    <ul>
+                        <li>Atajos de teclado para construir más rápido</li>
+                        <li>Comandos secretos del chat</li>
+                        <li>Técnicas avanzadas de parkour</li>
+                        <li>Estrategias para ganar en cualquier juego</li>
+                    </ul>
+                    <h3>🔐 Trucos de seguridad</h3>
+                    <ul>
+                        <li>Configura la autenticación de dos factores</li>
+                        <li>Reconoce y evita estafas comunes</li>
+                        <li>Protege tu cuenta con contraseñas seguras</li>
+                        <li>Configura restricciones de privacidad</li>
+                    </ul>
+                `
+            },
+            guias: {
+                title: {
+                    es: '📚 Guías Completas',
+                    en: '📚 Complete Guides',
+                    fr: '📚 Guides Complets'
+                },
+                content: `
+                    <p>Guías paso a paso para dominar todos los aspectos de Roblox.</p>
+                    <h3>🎨 Guía de Roblox Studio</h3>
+                    <ul>
+                        <li>Interfaz básica y herramientas principales</li>
+                        <li>Creación de tu primer juego simple</li>
+                        <li>Scripting básico en Lua</li>
+                        <li>Diseño de mapas y terrenos</li>
+                        <li>Publicación y monetización</li>
+                    </ul>
+                    <h3>👤 Guía de Personalización</h3>
+                    <ul>
+                        <li>Cómo conseguir avatares raros</li>
+                        <li>Personalización de outfits</li>
+                        <li>Accesorios y objetos colecionables</li>
+                        <li>Animaciones y emotes especiales</li>
+                    </ul>
+                    <h3>💰 Guía de Trading</h3>
+                    <ul>
+                        <li>Cómo evaluar el valor de los items</li>
+                        <li>Estrategias de negociación</li>
+                        <li>Plataformas seguras para trading</li>
+                        <li>Evitar estafas en el marketplace</li>
+                    </ul>
+                `
+            },
+            noticias: {
+                title: {
+                    es: '📰 Últimas Noticias',
+                    en: '📰 Latest News',
+                    fr: '📰 Dernières Nouvelles'
+                },
+                content: `
+                    <p>Mantente al día con todo lo que acontece en el universo Roblox.</p>
+                    <h3>🎮 Actualizaciones Recientes</h3>
+                    <ul>
+                        <li><strong>Nueva actualización de Roblox Studio:</strong> Herramientas mejoradas de renderizado</li>
+                        <li><strong>Eventos de temporada:</strong> Premios exclusivos de primavera</li>
+                        <li><strong>Nuevos avatares:</strong> Colección especial de creadores populares</li>
+                        <li><strong>Mejoras de seguridad:</strong> Nueva protección contra exploits</li>
+                    </ul>
+                    <h3>🏆 Torneos y Competencias</h3>
+                    <ul>
+                        <li>Torneo anual de construcción con premio de 100,000 Robux</li>
+                        <li>Competencia de scripting para principiantes</li>
+                        <li>Concurso de diseño de avatares</li>
+                        <li>Campeonato de juegos personalizados</li>
+                    </ul>
+                    <h3>🌟 Novedades de la Comunidad</h3>
+                    <ul>
+                        <li>Nuevo récord de jugadores concurrentes: 10 millones</li>
+                        <li>Creación más popular del mes con 50 millones de visitas</li>
+                        <li>Lanzamiento del programa para desarrolladores independientes</li>
+                        <li>Nueva función de colaboración en tiempo real</li>
+                    </ul>
+                `
+            },
+            contacto: {
+                title: {
+                    es: '📞 Contacto',
+                    en: '📞 Contact',
+                    fr: '📞 Contact'
+                },
+                content: `
+                    <p>¿Tienes preguntas, sugerencias o quieres colaborar con nosotros? ¡Estamos aquí para ayudarte!</p>
+                    <h3>📧 Vías de Contacto</h3>
+                    <div class="modal-contact-info">
+                        <div class="modal-contact-item">
+                            <strong>Email:</strong> 
+                            <a href="mailto:tomasribes11@gmail.com">tomasribes11@gmail.com</a>
+                        </div>
+                        <div class="modal-contact-item">
+                            <strong>Discord:</strong> WebRoblox#1234</div>
+                        </div>
+                        <div class="modal-contact-item">
+                            <strong>Twitter:</strong> @WebRobloxES</div>
+                        </div>
+                    </div>
+                    <h3>💬 ¿Cómo podemos ayudarte?</h3>
+                    <ul>
+                        <li><strong>Soporte técnico:</strong> Problemas con juegos o tu cuenta</li>
+                        <li><strong>Colaboraciones:</strong> Quieres ser creador de contenido</li>
+                        <li><strong>Sugerencias:</strong> Ideas para mejorar la web</li>
+                        <li><strong>Reportes:</strong> Errores o bugs que encuentres</li>
+                        <li><strong>Partnerships:</strong> Alianzas estratégicas</li>
+                    </ul>
+                    <h3>⏰ Horario de Atención</h3>
+                    <ul>
+                        <li>Lunes a Viernes: 9:00 - 20:00</li>
+                        <li>Sábados: 10:00 - 14:00</li>
+                        <li>Domingos: Cerrado (emergencias por email)</li>
+                    </ul>
+                    <p><strong>📍 Ubicación:</strong> Barcelona, España</p>
+                    <p><strong>💡 Tip:</strong> Para respuestas rápidas, contacta por Discord o Twitter durante el horario laboral.</p>
+                `
+            }
+        };
+
+        // Datos de los 15 artículos
+        const articles = {
+            robux: {
+                title: '5 trucos secretos para conseguir Robux rápido',
+                content: `
+                    <p>Aprende cómo obtener Robux gratis de forma legal y mejorar tu juego.</p>
+                    <h3>🔥 Trucos exclusivos para Robux:</h3>
+                    <ul>
+                        <li><strong>Completa misiones diarias:</strong> Gana hasta 100 Robux diarios completando tareas simples</li>
+                        <li><strong>Participa en eventos especiales:</strong> Los eventos de temporada ofrecen recompensas generosas</li>
+                        <li><strong>Crea y vende accesorios:</strong> Diseña items únicos y véndelos en el marketplace</li>
+                        <li><strong>Únete a grupos premium:</strong> Muchos grupos ofrecen Robux como beneficio</li>
+                        <li><strong>Canjea códigos promocionales:</strong> Sigue a Roblox en redes para obtener códigos exclusivos</li>
+                    </ul>
+                    <h3>⚠️ Métodos a evitar</h3>
+                    <ul>
+                        <li>Sitios que prometen "Robux gratis instantáneo"</li>
+                        <li>Generadores de Robux online</li>
+                        <li>Ofertas de Robux a precios irrealmente bajos</li>
+                        <li>Apps que piden tu contraseña de Roblox</li>
+                    </ul>
+                    <p><strong>💡 Consejo final:</strong> La paciencia es clave. Construye tu fortuna de Robux de forma legítima y sostenible.</p>
+                `
+            },
+            blox: {
+                title: 'Sube de nivel rápido en Blox Fruits',
+                content: `
+                    <p>Guía paso a paso para avanzar en Blox Fruits y dominar los niveles.</p>
+                    <h3>⚔️ Estrategias para dominar Blox Fruits:</h3>
+                    <ul>
+                        <li><strong>Elige la fruta correcta:</strong> Cada fruta tiene habilidades únicas</li>
+                        <li><strong>Granja eficiente:</strong> Encuentra los mejores spots para farmear</li>
+                        <li><strong>Combos de habilidades:</strong> Aprende combos devastadores</li>
+                        <li><strong>Trabajo en equipo:</strong> Únete a squads para mazmorras</li>
+                        <li><strong>Actualización de stats:</strong> Prioriza las estadísticas importantes</li>
+                    </ul>
+                    <h3>🏝️ Mejores lugares para farmear</h3>
+                    <ul>
+                        <li>Isla inicial (Niveles 1-50)</li>
+                        <li>Desierto (Niveles 50-150)</li>
+                        <li>Arctic (Niveles 150-300)</li>
+                        <li>Legendary Island (Niveles 300+)</li>
+                    </ul>
+                    <h3>⚡ Tips avanzados</h3>
+                    <ul>
+                        <li>Usa habilidades de área para grupos de enemigos</li>
+                        <li>Aprovecha los eventos dobles de XP</li>
+                        <li>Completa todas las misiones diarias</li>
+                        <li>Participa en raids de bosses</li>
+                    </ul>
+                `
+            },
+            adopt: {
+                title: 'Las mejores mascotas de Adopt Me y cómo conseguirlas',
+                content: `
+                    <p>Todo sobre las mascotas raras de Adopt Me y dónde encontrarlas.</p>
+                    <h3>🐾 Mascotas Legendarias</h3>
+                    <ul>
+                        <li><strong>Shadow Dragon:</strong> Obtenible durante Halloween</li>
+                        <li><strong>Giraffe:</strong> Solo disponible en safaris africanos</li>
+                        <li><strong>Elf Hedgehog:</strong> Evento de Navidad exclusivo</li>
+                        <li><strong>Bat Dragon:</strong> Halloween 2019 - muy raro</li>
+                        <li><strong>Evil Unicorn:</strong> Evento especial de Halloween</li>
+                    </ul>
+                    <h3>🎯 Estrategias de obtención</h3>
+                    <ul>
+                        <li><strong>Trading:</strong> Intercambia con otros jugadores</li>
+                        <li><strong>Eventos:</strong> Participa en eventos temporales</li>
+                        <li><strong>Huevos:</strong> Compra huevos de ediciones limitadas</li>
+                        <li><strong>Robux:</strong> Algunas mascotas solo con Robux</li>
+                    </ul>
+                    <h3>💰 Valor de las mascotas</h3>
+                    <ul>
+                        <li>Legendary: Muy valiosas (Shadow Dragon ~1000 Robux)</li>
+                        <li>Epic: Valiosas (Dragon ~200 Robux)</li>
+                        <li>Rare: Moderadamente valiosas</li>
+                        <li>Common: Fácilmente obtenibles</li>
+                    </ul>
+                `
+            },
+            studio: {
+                title: 'Guía completa de Roblox Studio para principiantes',
+                content: `
+                    <p>Aprende a crear tus propios juegos desde cero con herramientas profesionales.</p>
+                    <h3>🎨 Interfaz de Roblox Studio</h3>
+                    <ul>
+                        <li><strong>Explorer:</strong> Navegación de objetos del juego</li>
+                        <li><strong>Properties:</strong> Configuración de elementos</li>
+                        <li><strong>Toolbox:</strong> Biblioteca de modelos y assets</li>
+                        <li><strong>Script Editor:</strong> Programación en Lua</li>
+                        <li><strong>Test Mode:</strong> Prueba tu juego en tiempo real</li>
+                    </ul>
+                    <h3>🔧 Herramientas esenciales</h3>
+                    <ul>
+                        <li><strong>Select Tool:</strong> Seleccionar y mover objetos</li>
+                        <li><strong>Move Tool:</strong> Precisión en el posicionamiento</li>
+                        <li><strong>Scale Tool:</strong> Ajustar tamaño de objetos</li>
+                        <li><strong>Rotate Tool:</strong> Rotar elementos con precisión</li>
+                        <li><strong>Material Tool:</strong> Cambiar texturas</li>
+                    </ul>
+                    <h3>💻 Primer script básico</h3>
+                    <ul>
+                        <li>Crea un nuevo script en ServerScriptService</li>
+                        <li>Aprende variables y funciones básicas</li>
+                        <li>Manipula objetos mediante código</li>
+                        <li>Crea eventos y condiciones</li>
+                    </ul>
+                `
+            },
+            trading: {
+                title: 'Master del Trading: Cómo negociar como un profesional',
+                content: `
+                    <p>Estrategias avanzadas para maximizar tus ganancias en el marketplace.</p>
+                    <h3>📊 Principios del Trading</h3>
+                    <ul>
+                        <li><strong>Oferta y demanda:</strong> Entiende el valor real</li>
+                        <li><strong>Paciencia:</strong> No aceptes la primera oferta</li>
+                        <li><strong>Investigación:</strong> Conoce los precios del mercado</li>
+                        <li><strong>Red de contactos:</strong> Construye relaciones</li>
+                    </ul>
+                    <h3>💎 Items más valiosos</h3>
+                    <ul>
+                        <li><strong>Limited Items:</strong> Ediciones limitadas</li>
+                        <li><strong>Vintage:</strong> Items antiguos</li>
+                        <li><strong>Collections:</strong> Series completas</li>
+                        <li><strong>Event Items:</strong> Objetos de eventos especiales</li>
+                    </ul>
+                    <h3>⚠️ Señales de alerta</h3>
+                    <ul>
+                        <li>Ofertas demasiado buenas para ser verdad</li>
+                        <li>Usuarios con cuentas nuevas</li>
+                        <li>Peticiones de intercambio injustas</li>
+                        <li>Presión para aceptar rápidamente</li>
+                    </ul>
+                `
+            },
+            scripting: {
+                title: 'Programación en Lua: Scripts esenciales para tu juego',
+                content: `
+                    <p>Aprende los fundamentos de scripting y crea mecánicas increíbles.</p>
+                    <h3>📝 Conceptos básicos de Lua</h3>
+                    <ul>
+                        <li><strong>Variables:</strong> Almacenamiento de datos</li>
+                        <li><strong>Funciones:</strong> Bloques de código reutilizables</li>
+                        <li><strong>Eventos:</strong> Respuesta a acciones del juego</li>
+                        <li><strong>Condicionales:</strong> if/else para tomar decisiones</li>
+                        <li><strong>Bucles:</strong> for y while para repetir acciones</li>
+                        <li><strong>Tablas:</strong> Estructuras de datos para organizar información</li>
+                    </ul>
+                    <h3>🎮 Scripts esenciales para juegos</h3>
+                    <ul>
+                        <li><strong>LocalScript:</strong> Se ejecuta en el cliente del jugador</li>
+                        <li><strong>Script:</strong> Se ejecuta en el servidor</li>
+                        <li><strong>ModuleScript:</strong> Código reutilizable entre scripts</li>
+                        <li><strong>BindableEvent:</strong> Comunicación entre scripts</li>
+                        <li><strong>RemoteEvent:</strong> Comunicación cliente-servidor</li>
+                    </ul>
+                    <h3>🔧 Scripts prácticos para empezar</h3>
+                    <ul>
+                        <li><strong>Teletransporte:</strong> Mover jugadores entre lugares</li>
+                        <li><strong>Sistema de puntos:</strong> Contador de puntuación para jugadores</li>
+                        <li><strong>Power-ups:</strong> Mejoras temporales</li>
+                        <li><strong>Enemigos IA:</strong> Comportamiento de NPCs</li>
+                    </ul>
+                    <h3>🔧 Tips de optimización</h3>
+                    <ul>
+                        <li>Usa RemoteEvents para comunicación cliente-servidor</li>
+                        <li>Limita el número de scripts por objeto</li>
+                        <li>Optimiza bucles y condiciones</li>
+                        <li>Prueba regularmente el rendimiento</li>
+                    </ul>
+                `
+            },
+            avatar: {
+                title: 'Personalización Avatar: Crea un estilo único',
+                content: `
+                    <p>Descubre cómo personalizar tu avatar con outfits y accesorios exclusivos.</p>
+                    <h3>👗 Componentes del Avatar</h3>
+                    <ul>
+                        <li><strong>Cabeza:</strong> Sombreros, peinados, caras</li>
+                        <li><strong>Cuerpo:</strong> Ropa, capas, accesorios</li>
+                        <li><strong>Extremidades:</strong> Guantes, botas, brazales</li>
+                        <li><strong>Especial:</strong> Alas, colas, efectos</li>
+                    </ul>
+                    <h3>🎨 Estilos populares</h3>
+                    <ul>
+                        <li><strong>Streetwear:</strong> Ropa urbana y moderna</li>
+                        <li><strong>Fantasy:</strong> Elementos mágicos y épicos</li>
+                        <li><strong>Cyberpunk:</strong> Tecnología y neon</li>
+                        <li><strong>Retro:</strong> Estilos vintage y clásicos</li>
+                    </ul>
+                    <h3>💡 Consejos de personalización</h3>
+                    <ul>
+                        <li>Mantén coherencia en el estilo</li>
+                        <li>Experimenta con combinaciones únicas</li>
+                        <li>Aprovecha las ventas y promociones</li>
+                        <li>Crea outfits temáticos para eventos</li>
+                    </ul>
+                `
+            },
+            games: {
+                title: 'Top 10 juegos populares que debes probar ahora',
+                content: `
+                    <p>Los mejores juegos de Roblox con guías rápidas para empezar.</p>
+                    <h3>🏆 Top 10 Juegos</h3>
+                    <ul>
+                        <li><strong>1. Brookhaven:</strong> Simulación de vida urbana</li>
+                        <li><strong>2. Tower of Hell:</strong> Parkour extremo</li>
+                        <li><strong>3. Piggy:</strong> Survival horror</li>
+                        <li><strong>4. Adopt Me:</strong> Mascotas y familia</li>
+                        <li><strong>5. Royale High:</strong> Escuela de fantasía</li>
+                        <li><strong>6. MeepCity:</strong> Social y construcción</li>
+                        <li><strong>7. Jailbreak:</strong> Policías vs ladrones</li>
+                        <li><strong>8. Murder Mystery 2:</strong> Misterio y deducción</li>
+                        <li><strong>9. Arsenal:</strong> Shooter competitivo</li>
+                        <li><strong>10. Welcome to Bloxburg:</strong> Simulación de vida</li>
+                    </ul>
+                    <h3>🎮 Tips para cada juego</h3>
+                    <ul>
+                        <li>Brookhaven: Compra una casa y consigue trabajo</li>
+                        <li>Tower of Hell: Practica saltos básicos primero</li>
+                        <li>Piggy: Trabaja en equipo con otros jugadores</li>
+                        <li>Adopt Me: Cuida mascotas para subir de nivel</li>
+                    </ul>
+                `
+            },
+            security: {
+                title: 'Guía de seguridad: Protege tu cuenta de hackers',
+                content: `
+                    <p>Consejos esenciales para mantener tu cuenta Roblox segura.</p>
+                    <h3>🔒 Configuración de seguridad</h3>
+                    <ul>
+                        <li><strong>2FA:</strong> Autenticación de dos factores</li>
+                        <li><strong>Contraseña fuerte:</strong> Mínimo 12 caracteres</li>
+                        <li><strong>Email verificado:</strong> Confirma tu correo</li>
+                        <li><strong>PIN de cuenta:</strong> Código de seguridad adicional</li>
+                    </ul>
+                    <h3>⚠️ Señales de peligro</h3>
+                    <ul>
+                        <li>Ofertas de Robux gratis</li>
+                        <li>Peticiones de contraseña</li>
+                        <li>Links sospechosos</li>
+                        <li>Comportamiento extraño de amigos</li>
+                    </ul>
+                    <h3>🛡️ Prácticas seguras</h3>
+                    <ul>
+                        <li>Nunca compartas tu contraseña</li>
+                        <li>Usa contraseñas diferentes por plataforma</li>
+                        <li>Mantén actualizado tu email de recuperación</li>
+                        <li>Revisa regularmente la actividad de tu cuenta</li>
+                    </ul>
+                `
+            },
+            events: {
+                title: 'Eventos especiales: No te pierdas recompensas exclusivas',
+                content: `
+                    <p>Calendario de eventos y cómo aprovechar cada oportunidad.</p>
+                    <h3>🎅 Eventos de temporada</h3>
+                    <ul>
+                        <li><strong>Halloween:</strong> Items temáticos de terror</li>
+                        <li><strong>Navidad:</strong> Mascotas navideñas exclusivas</li>
+                        <li><strong>Pascua:</strong> Huevos de Pascua coleccionables</li>
+                        <li><strong>Verano:</strong> Accesorios playeros</li>
+                    </ul>
+                    <h3>🎯 Eventos competitivos</h3>
+                    <ul>
+                        <li><strong>Torneos de construcción:</strong> Premios en Robux</li>
+                        <li><strong>Concursos de diseño:</strong> Items personalizados</li>
+                        <li><strong>Desafíos de velocidad:</strong> Títulos especiales</li>
+                        <li><strong>Competencias de scripting:</strong> Reconocimiento</li>
+                    </ul>
+                    <h3>📅 Calendario recomendado</h3>
+                    <ul>
+                        <li>Enero: Evento de Año Nuevo</li>
+                        <li>Marzo: Festival de primavera</li>
+                        <li>Julio: Summer Games</li>
+                        <li>Octubre: Halloween Month</li>
+                        <li>Diciembre: Winter Festival</li>
+                    </ul>
+                `
+            },
+            mobile: {
+                title: 'Roblox Mobile: Optimiza tu experiencia móvil',
+                content: `
+                    <p>Configuraciones y trucos para jugar Roblox en tu teléfono.</p>
+                    <h3>📱 Configuración óptima</h3>
+                    <ul>
+                        <li><strong>Gráficos:</strong> Ajusta según tu dispositivo</li>
+                        <li><strong>Controles:</strong> Personaliza la interfaz</li>
+                        <li><strong>Sensibilidad:</strong> Encuentra tu punto ideal</li>
+                        <li><strong>Modo avión:</strong> Reduce lag en conexiones pobres</li>
+                    </ul>
+                    <h3>🔧 Mejoras de rendimiento</h3>
+                    <ul>
+                        <li>Cierra apps en segundo plano</li>
+                        <li>Usa WiFi cuando sea posible</li>
+                        <li>Limpia caché regularmente</li>
+                        <li>Actualiza la aplicación</li>
+                    </ul>
+                    <h3>🎮 Controles táctiles</h3>
+                    <ul>
+                        <li>Usa ambos pulgares para mayor precisión</li>
+                        <li>Personaliza tamaño de botones</li>
+                        <li>Ajuste de cámara automático</li>
+                        <li>Atajos de gestos rápidos</li>
+                    </ul>
+                `
+            },
+            building: {
+                title: 'Arquitectura Roblox: Construye mundos impresionantes',
+                content: `
+                    <p>Técnicas avanzadas de construcción y diseño de mapas.</p>
+                    <h3>🏗️ Principios de diseño</h3>
+                    <ul>
+                        <li><strong>Balance:</strong> Simetría y proporción</li>
+                        <li><strong>Flujo:</strong> Guía del jugador</li>
+                        <li><strong>Atmósfera:</strong> Iluminación y ambiente</li>
+                        <li><strong>Detalle:</strong> Texturas y acabados</li>
+                    </ul>
+                    <h3>🎨 Técnicas avanzadas</h3>
+                    <ul>
+                        <li><strong>Terraforming:</strong> Modelado de terrenos</li>
+                        <li><strong>Lighting:</strong> Iluminación profesional</li>
+                        <li><strong>Mesh editing:</strong> Modelado 3D personalizado</li>
+                        <li><strong>Particle effects:</strong> Efectos visuales</li>
+                    </ul>
+                    <h3>🏛️ Estilos arquitectónicos</h3>
+                    <ul>
+                        <li>Moderno: Líneas limpias y minimalismo</li>
+                        <li>Gótico: Arcos y detalles ornamentales</li>
+                        <li>Futurista: Tecnología y metal</li>
+                        <li>Natural: Elementos orgánicos</li>
+                    </ul>
+                `
+            },
+            social: {
+                title: 'Comunidad Roblox: Crea amigos y únete a grupos',
+                content: `
+                    <p>Cómo socializar y encontrar jugadores con tus mismos intereses.</p>
+                    <h3>👥 Construye tu red social</h3>
+                    <ul>
+                        <li><strong>Amigos:</strong> Añade jugadores compatibles</li>
+                        <li><strong>Grupos:</strong> Únete a comunidades activas</li>
+                        <li><strong>Servidores:</strong> Encuentra tu lugar ideal</li>
+                        <li><strong>Discord:</strong> Comunidades externas</li>
+                    </ul>
+                    <h3>🎮 Juegos sociales</h3>
+                    <ul>
+                        <li><strong>Roleplay:</strong> Simulación de vida real</li>
+                        <li><strong>Cooperativos:</strong> Trabajo en equipo</li>
+                        <li><strong>Social hubs:</strong> Lugares de encuentro</li>
+                        <li><strong>Eventos:</strong> Actividades grupales</li>
+                    </ul>
+                    <h3>💡 Tips de socialización</h3>
+                    <ul>
+                        <li>Sé respetuoso con todos</li>
+                        <li>Participa en conversaciones</li>
+                        <li>Ofrece ayuda a nuevos jugadores</li>
+                        <li>Organiza tus propios eventos</li>
+                    </ul>
+                `
+            },
+            monetization: {
+                title: 'Monetización: Gana dinero con tus creaciones',
+                content: `
+                    <p>Estrategias para convertir tus juegos en una fuente de ingresos.</p>
+                    <h3>💰 Métodos de monetización</h3>
+                    <ul>
+                        <li><strong>Game Passes:</strong> Ventas de acceso premium</li>
+                        <li><strong>Developer Products:</strong> Compras dentro del juego</li>
+                        <li><strong>Clothing:</strong> Diseño y venta de ropa</li>
+                        <li><strong>Models:</strong> Venta de assets 3D</li>
+                    </ul>
+                    <h3>📈 Estrategias de éxito</h3>
+                    <ul>
+                        <li>Crea contenido de alta calidad</li>
+                        <li>Actualiza regularmente tu juego</li>
+                        <li>Escucha feedback de la comunidad</li>
+                        <li>Promociona en redes sociales</li>
+                    </ul>
+                    <h3>💎 Precios y valor</h3>
+                    <ul>
+                        <li>Game Passes: 5-1000 Robux</li>
+                        <li>Developer Products: 1-10000 Robux</li>
+                        <li>Clothing: 5-500 Robux</li>
+                        <li>Models: 10-1000 Robux</li>
+                    </ul>
+                `
+            },
+            performance: {
+                title: 'Optimización: Mejora el rendimiento de tu juego',
+                content: `
+                    <p>Técnicas para que tu juego corra fluido en todos los dispositivos.</p>
+                    <h3>⚡ Optimización de scripts</h3>
+                    <ul>
+                        <li><strong>RemoteEvents:</strong> Reduce tráfico de red</li>
+                        <li><strong>Object pooling:</strong> Reutiliza objetos</li>
+                        <li><strong>Coroutine:</strong> Ejecución eficiente</li>
+                        <li><strong>Memory management:</strong> Gestión de memoria</li>
+                    </ul>
+                    <h3>🎨 Optimización gráfica</h3>
+                    <ul>
+                        <li><strong>LOD:</strong> Level of Detail</li>
+                        <li><strong>Occlusion culling:</strong> Ocultación de objetos</li>
+                        <li><strong>Texture optimization:</strong> Texturas eficientes</li>
+                        <li><strong>Lighting:</strong> Iluminación optimizada</li>
+                    </ul>
+                    <h3>🔧 Herramientas de diagnóstico</h3>
+                    <ul>
+                        <li><strong>MicroProfiler:</strong> Análisis de rendimiento</li>
+                        <li><strong>Performance Stats:</strong> Estadísticas en tiempo real</li>
+                        <li><strong>Memory analyzer:</strong> Uso de memoria</li>
+                        <li><strong>Network analyzer:</strong> Tráfico de red</li>
+                    </ul>
+                `
+            }
+        };
+
+        // Sistema de autenticación
+        class AuthService {
+            constructor() {
+                this.currentUser = this.getCurrentUser();
+                this.init();
+            }
+
+            init() {
+                this.updateAuthUI();
+            }
+
+            getCurrentUser() {
+                const userData = localStorage.getItem('currentUser');
+                return userData ? JSON.parse(userData) : null;
+            }
+
+            saveUser(email, password) {
+                const users = this.getUsers();
+                users[email] = { email, password, createdAt: new Date().toISOString() };
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            getUsers() {
+                const users = localStorage.getItem('users');
+                return users ? JSON.parse(users) : {};
+            }
+
+            register(email, password) {
+                const users = this.getUsers();
+                
+                if (users[email]) {
+                    return { success: false, message: 'El email ya está registrado' };
+                }
+
+                this.saveUser(email, password);
+                return { success: true, message: 'Cuenta creada exitosamente' };
+            }
+
+            login(email, password) {
+                const users = this.getUsers();
+                
+                if (!users[email]) {
+                    return { success: false, message: 'Email no encontrado' };
+                }
+
+                if (users[email].password !== password) {
+                    return { success: false, message: 'Contraseña incorrecta' };
+                }
+
+                // Guardar sesión actual
+                localStorage.setItem('currentUser', JSON.stringify({
+                    email: users[email].email,
+                    loginTime: new Date().toISOString()
+                }));
+
+                this.currentUser = this.getCurrentUser();
+                this.updateAuthUI();
+                
+                return { success: true, message: '¡Bienvenido de nuevo!' };
+            }
+
+            logout() {
+                localStorage.removeItem('currentUser');
+                this.currentUser = null;
+                this.updateAuthUI();
+            }
+
+            isLoggedIn() {
+                return this.currentUser !== null;
+            }
+
+            updateAuthUI() {
+                const authAreaLoggedOut = document.getElementById('authAreaLoggedOut');
+                const authAreaLoggedIn = document.getElementById('authAreaLoggedIn');
+                const userGreeting = document.getElementById('userGreeting');
+                const logoutBtn = document.getElementById('logoutBtn');
+                const authBtn = document.getElementById('authBtn');
+
+                if (this.isLoggedIn()) {
+                    // Usuario logueado - mostrar área logueada
+                    if (authAreaLoggedOut) authAreaLoggedOut.style.display = 'none';
+                    if (authAreaLoggedIn) authAreaLoggedIn.style.display = 'flex';
+                    
+                    // Actualizar saludo
+                    if (userGreeting) {
+                        const email = this.currentUser.email;
+                        const username = email.split('@')[0]; // Extraer nombre del email
+                        userGreeting.textContent = `Hola, ${username}`;
+                    }
+                    
+                    // Configurar botón de logout
+                    if (logoutBtn) {
+                        logoutBtn.onclick = () => this.logout();
+                    }
+                } else {
+                    // Usuario no logueado - mostrar área de login
+                    if (authAreaLoggedOut) authAreaLoggedOut.style.display = 'flex';
+                    if (authAreaLoggedIn) authAreaLoggedIn.style.display = 'none';
+                    
+                    // Configurar botón de auth
+                    if (authBtn) {
+                        authBtn.onclick = () => {
+                            const modalSystem = new ModalSystem();
+                            modalSystem.openAuthModal();
+                        };
+                    }
+                }
+            }
+
+            getTranslation(key) {
+                const currentLang = localStorage.getItem('language') || 'es';
+                const translations = {
+                    es: {
+                        'nav.auth': 'Crear cuenta / Iniciar sesión'
+                    },
+                    en: {
+                        'nav.auth': 'Create Account / Sign In'
+                    },
+                    fr: {
+                        'nav.auth': 'Créer un compte / Se connecter'
+                    }
+                };
+                return translations[currentLang][key] || key;
+            }
+        }
+        class MobileNav {
+            constructor() {
+                this.navToggle = document.getElementById('mobileMenu');
+                this.navMenu = document.querySelector('.nav-menu');
+                this.init();
+            }
+
+            init() {
+                this.navToggle.addEventListener('click', () => {
+                    this.navToggle.classList.toggle('active');
+                    this.navMenu.classList.toggle('active');
+                });
+
+                // Cerrar menú al hacer clic en un enlace
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        this.navToggle.classList.remove('active');
+                        this.navMenu.classList.remove('active');
+                    });
+                });
+            }
+        }
+
+        // Inicializar sistemas
+        let modalSystem;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            modalSystem = new ModalSystem();
+            new MobileNav();
+            new AuthService(); // Inicializar sistema de autenticación
+        });
+    </script>
+</body>
+</html>

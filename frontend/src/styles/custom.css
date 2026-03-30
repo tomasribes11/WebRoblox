@@ -1,0 +1,118 @@
+/* src/styles/custom.css
+ * Custom CSS applied on top of Bootstrap 5.3.
+ * Bootstrap's dark mode is activated via data-bs-theme="dark" on <html>.
+ * We extend it with the green/blue accent colors from the original site.
+ */
+
+/* ─── Accent color variables ──────────────────────────────────────────────
+ * Dark mode: vibrant green + blue (matches the original site exactly)
+ * Light mode: deeper blue palette for better contrast on white
+ */
+:root[data-bs-theme="dark"] {
+  --accent-primary:   #00ff88;
+  --accent-secondary: #00d4ff;
+  --accent-gradient:  linear-gradient(135deg, #00ff88, #00d4ff);
+  --bs-body-bg:       #1e1e2f;
+  --bs-body-color:    #ffffff;
+}
+
+:root[data-bs-theme="light"] {
+  --accent-primary:   #0066cc;
+  --accent-secondary: #004499;
+  --accent-gradient:  linear-gradient(135deg, #0066cc, #004499);
+}
+
+/* ─── Accent button ───────────────────────────────────────────────────────
+ * Used throughout the app for primary CTAs (Read more, Sign in, etc.)
+ */
+.btn-accent {
+  background:   var(--accent-gradient);
+  color:        #000;
+  border:       none;
+  font-weight:  600;
+  transition:   transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-accent:hover {
+  transform:  translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+  color:      #000;
+}
+
+/* ─── Badge accent ────────────────────────────────────────────────────────*/
+.bg-accent {
+  background: var(--accent-gradient) !important;
+  color: #000 !important;
+}
+
+/* ─── Gradient text (logo, hero title) ───────────────────────────────────
+ * Replicates the original site's gradient logo effect.
+ */
+.text-gradient-accent {
+  background:             var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip:         text;
+}
+
+/* ─── Spinner accent color ────────────────────────────────────────────────*/
+.spinner-border.text-accent {
+  color: var(--accent-primary) !important;
+}
+
+/* ─── Hero section ────────────────────────────────────────────────────────
+ * Subtle gradient background to distinguish hero from article grid.
+ */
+.hero-section {
+  background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+:root[data-bs-theme="light"] .hero-section {
+  background: linear-gradient(180deg, rgba(0, 102, 204, 0.05) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ─── Article card hover ──────────────────────────────────────────────────*/
+.article-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-card:hover {
+  transform:  translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.12);
+}
+
+/* ─── Article content typography ─────────────────────────────────────────
+ * Styles for the HTML rendered from the rich-text editor in ArticleDetailPage.
+ */
+.article-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.article-content ul {
+  padding-left: 1.5rem;
+}
+
+.article-content li {
+  margin-bottom: 0.4rem;
+  line-height: 1.7;
+}
+
+.article-content p {
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* ─── Navbar backdrop (dark mode) ─────────────────────────────────────────*/
+:root[data-bs-theme="dark"] .navbar {
+  background-color: rgba(26, 26, 46, 0.92) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:root[data-bs-theme="light"] .navbar {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
