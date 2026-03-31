@@ -12,8 +12,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Order matters: categories must exist before articles
+        // Order matters: users first, then categories, then articles
         $this->call([
+            UserSeeder::class,
             CategorySeeder::class,
             ArticleSeeder::class,
         ]);

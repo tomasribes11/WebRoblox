@@ -30,6 +30,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->authMiddleware([
+                Authenticate::class,
+            ], isPersistent: true)
             ->colors(['primary' => Color::Emerald])  // Matches site's green accent
             ->brandName('Mundo Roblox Admin')
             ->resources([
