@@ -1,0 +1,9 @@
+{
+  "featured": "Artículos Destacados",
+  "all": "Todos los Artículos",
+  "readMore": "Leer más",
+  "views": "visitas",
+  "noArticles": "No hay artículos disponibles en este momento.",
+  "notFound": "Artículo no encontrado.",
+  "backToCategory": "Volver a {{category}}"
+}

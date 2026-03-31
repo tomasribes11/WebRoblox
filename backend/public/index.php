@@ -1,0 +1,22 @@
+<?php
+
+// public/index.php
+// The entry point for all HTTP requests to the Laravel application.
+// Nginx is configured to route PHP requests to this file via FastCGI.
+
+use Illuminate\Http\Request;
+
+define('LARAVEL_START', microtime(true));
+
+// Maintenance mode check
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+// Composer autoloader
+require __DIR__.'/../vendor/autoload.php';
+
+// Bootstrap the application and handle the request
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+$app->handleRequest(Request::capture());

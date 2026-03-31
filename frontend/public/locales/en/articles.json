@@ -1,0 +1,9 @@
+{
+  "featured": "Featured Articles",
+  "all": "All Articles",
+  "readMore": "Read More",
+  "views": "views",
+  "noArticles": "No articles available at this time.",
+  "notFound": "Article not found.",
+  "backToCategory": "Back to {{category}}"
+}
