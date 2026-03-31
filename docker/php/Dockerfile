@@ -13,6 +13,8 @@ RUN apk add --no-cache \
     zip \
     unzip \
     oniguruma-dev \
+    icu-dev \
+    libzip-dev \
     nodejs \
     npm
 
@@ -25,7 +27,9 @@ RUN docker-php-ext-install \
     pcntl \
     bcmath \
     gd \
-    xml
+    xml \
+    intl \
+    zip
 
 # Install Composer (official image trick — copies the binary)
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
