@@ -18,12 +18,18 @@ setup: ## Configuración completa (ejecutar una sola vez)
 	docker compose up -d --build
 	@echo "⏳ Esperando a que MySQL esté listo..."
 	@sleep 15
+	@echo "📦 Instalando dependencias PHP..."
+	docker compose exec php-fpm composer install
 	@echo "🔑 Generando clave de aplicación Laravel..."
 	docker compose exec php-fpm php artisan key:generate
 	@echo "🗃️ Ejecutando migraciones..."
 	docker compose exec php-fpm php artisan migrate
 	@echo "🌱 Sembrando datos iniciales..."
 	docker compose exec php-fpm php artisan db:seed
+	@echo "🔗 Creando enlace simbólico de storage..."
+	docker compose exec php-fpm php artisan storage:link
+	@echo "🎨 Publicando assets de Filament..."
+	docker compose exec php-fpm php artisan filament:assets
 	@echo ""
 	@echo "✅ Listo. Ahora ejecuta:"
 	@echo "   make admin-user   → para crear el usuario administrador"

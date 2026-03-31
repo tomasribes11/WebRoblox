@@ -32,6 +32,30 @@ Tu navegador (Chrome/Firefox)
 | **Frontend** | React 18 + Vite 5 | La interfaz visual que ves en el navegador |
 | **Docker** | Docker | "Caja mágica" que contiene y ejecuta todo lo anterior |
 
+### Cómo reparte Nginx las peticiones
+
+Nginx es el portero del proyecto. Cuando llega una petición, mira la URL y decide a quién mandársela:
+
+```
+Tu navegador (http://localhost/...)
+        │
+        ▼
+    [Nginx :80]
+        │
+        ├── /api/*          → PHP (Laravel API — datos en JSON)
+        ├── /admin/*        → PHP (Filament — panel de administración)
+        ├── /filament/*     → PHP (rutas internas de Filament)
+        ├── /livewire/*     → PHP (Livewire — formularios reactivos del admin)
+        ├── /js/filament/*  → PHP public/ (JS del panel admin, pre-compilado)
+        ├── /css/filament/* → PHP public/ (CSS del panel admin, pre-compilado)
+        ├── /vendor/*       → PHP public/ (otros assets publicados)
+        ├── /build/*        → PHP public/ (build de producción Vite)
+        ├── /storage/*      → PHP public/ (imágenes y archivos subidos)
+        └── /* (resto)      → React :5173 (Vite dev server, actualización en vivo)
+```
+
+> **¿Por qué importa esto?** Si Nginx no tiene configurada una ruta y la manda a React (Vite) por error, el navegador recibe HTML de React en vez del archivo correcto — lo que provoca errores como CSS/JS que no cargan o formularios que no funcionan.
+
 ### ¿Qué es Docker?
 
 Imagina que cada pieza del proyecto (Nginx, PHP, MySQL, React) es un programa que necesita instalarse en tu ordenador. El problema es que cada uno tiene sus propias versiones y configuraciones, y pueden entrar en conflicto.
@@ -353,67 +377,280 @@ Esta separación permite tener el mismo artículo en 3 idiomas sin duplicar meta
 
 ---
 
+## Solución de problemas — Panel de administración
+
+### El formulario de login dice "Method Not Allowed"
+
+**Síntoma:** Rellenas email y contraseña en `http://localhost/admin/login`, pulsas "Sign in" y aparece el error `MethodNotAllowedHttpException: The POST method is not supported for route admin/login`.
+
+**Causa:** El JavaScript de Livewire (que gestiona el formulario) no se está cargando. Sin él, el formulario hace un envío HTML normal a la misma URL (`/admin/login`), que solo acepta GET.
+
+**Solución:** Este problema ya está corregido — Nginx ahora enruta `/livewire/*` a PHP correctamente. Si reaparece, comprueba que el contenedor está actualizado:
+
+```bash
+docker compose restart nginx
+```
+
+**Verificación:** Abre las herramientas de desarrollador del navegador (F12 → pestaña "Network") y comprueba que `/livewire/livewire.js` devuelve código JavaScript (no una página HTML).
+
+---
+
+### El panel admin carga sin estilos (CSS/JS rotos)
+
+**Síntoma:** La página `http://localhost/admin` carga pero se ve sin estilos — texto sin formato, sin colores, sin layout.
+
+**Causa:** Los assets de Filament no están publicados o Nginx no los sirve correctamente.
+
+**Solución:**
+
+```bash
+# 1. Publicar los assets de Filament
+docker compose exec php-fpm php artisan filament:assets
+
+# 2. Reiniciar nginx
+docker compose restart nginx
+```
+
+**Verificación:**
+```bash
+curl -s http://localhost/js/filament/filament/app.js | head -c 50
+# Debe mostrar código JS, no HTML
+```
+
+---
+
+### "Access denied" al migrar (error de base de datos)
+
+**Síntoma:** `php artisan migrate` falla con `Access denied for user`.
+
+**Causas comunes y soluciones:**
+
+1. **Contraseña con `#` sin comillas en `.env`:** El carácter `#` se interpreta como inicio de comentario. La contraseña `miPass#123` en `.env` equivale a `miPass`. Solución: añadir comillas dobles.
+   ```env
+   # MAL — el # y todo lo que sigue se ignoran
+   DB_PASSWORD=miPass#123
+
+   # BIEN — las comillas preservan el # como parte de la contraseña
+   DB_PASSWORD="miPass#123"
+   ```
+
+2. **Caché de configuración desactualizada:** Después de cambiar `.env`, ejecuta:
+   ```bash
+   docker compose exec php-fpm php artisan config:clear
+   ```
+
+---
+
 ## Solución de problemas en Windows
+
+### Cómo abrir la terminal correcta en Windows
+
+Este proyecto requiere ejecutar comandos en la **terminal de Ubuntu (WSL2)**, no en PowerShell ni en CMD. Es importante porque los comandos `make`, `docker compose` y los scripts del proyecto están diseñados para Linux.
+
+**Cómo abrir la terminal Ubuntu:**
+- Abre el menú inicio y busca "Ubuntu"
+- O abre **Windows Terminal** (si lo tienes instalado) y selecciona "Ubuntu" en el desplegable `∨` de la barra de pestañas
+- O desde PowerShell, escribe `wsl` para entrar directamente
+
+Verás el prompt:
+```
+tu_nombre@DESKTOP-XXXXX:~$
+```
+
+A partir de ahí, **todos los comandos de este README se ejecutan en esa ventana**.
+
+---
+
+### Primer uso — clonar el proyecto en WSL
+
+Los archivos del proyecto deben estar **dentro del sistema de archivos de Linux (WSL)**, no en `C:\Users\...`. Trabajar desde `C:\` con WSL es muy lento y puede causar problemas de permisos.
+
+```bash
+# Desde la terminal Ubuntu:
+mkdir -p ~/proyectos
+cd ~/proyectos
+
+# Opción A — clonar desde Git
+git clone <URL_DEL_REPOSITORIO> WebRoblox
+cd WebRoblox
+
+# Opción B — si tienes el proyecto en un ZIP descargado en C:\Users\TuNombre\Downloads
+cd /mnt/c/Users/TuNombre/Downloads    # el disco C: está en /mnt/c/ desde WSL
+unzip WebRoblox.zip -d ~/proyectos/
+cd ~/proyectos/WebRoblox
+```
+
+---
 
 ### El comando `make` no funciona
 
-Si ves `make: command not found` o `'make' is not recognized`, asegúrate de estar usando la **terminal de Ubuntu (WSL2)**, no PowerShell ni CMD. El comando `make` está disponible en Ubuntu pero no en Windows nativo.
+Si ves `make: command not found` o `'make' is not recognized`:
 
-Si estás en Ubuntu y aun así no funciona:
-```bash
-sudo apt update && sudo apt install make -y
+1. Asegúrate de estar en la **terminal Ubuntu (WSL2)**, no PowerShell ni CMD.
+2. Si estás en Ubuntu y aun así falla, instala `make`:
+   ```bash
+   sudo apt update && sudo apt install make -y
+   ```
+
+---
+
+### Docker Desktop no arranca o da error al iniciar
+
+**Paso 1** — Comprueba que WSL2 está activo (PowerShell):
+```powershell
+wsl --status
+# Debe mostrar: "Versión predeterminada: 2"
 ```
 
-### Docker Desktop no arranca o da error
+**Paso 2** — Activa la integración WSL en Docker Desktop:
+- Docker Desktop → ⚙️ Settings → Resources → WSL Integration
+- Activa el toggle de tu distribución Ubuntu
+- Haz clic en "Apply & Restart"
 
-1. Comprueba que WSL2 está activo: abre PowerShell y ejecuta `wsl --status`
-2. En Docker Desktop → Settings → Resources → WSL Integration → activa tu distribución de Ubuntu
-3. Reinicia Docker Desktop
+**Paso 3** — Si Docker Desktop pide actualizar el kernel de WSL:
+```powershell
+# Ejecuta en PowerShell como administrador
+wsl --update
+wsl --shutdown
+```
+Luego vuelve a abrir Docker Desktop.
+
+---
+
+### `docker compose` no se reconoce en WSL
+
+Docker Desktop en Windows instala el comando `docker` y `docker compose` en WSL automáticamente, pero solo si la integración está activada (ver apartado anterior).
+
+Comprueba que funciona:
+```bash
+docker --version
+docker compose version
+```
+
+Si no funcionan, cierra y vuelve a abrir la terminal Ubuntu después de activar la integración WSL en Docker Desktop.
+
+---
 
 ### El puerto 80 está ocupado
 
-En Windows, el puerto 80 puede estar ocupado por IIS (Internet Information Services) o Skype.
+En Windows, el puerto 80 puede estar ocupado por **IIS** (servidor web de Windows) o por **Skype**.
 
-**Opción A** — Desactivar IIS:
-- Abre PowerShell como administrador y ejecuta: `net stop w3svc`
+**Opción A** — Desactivar IIS temporalmente (PowerShell como administrador):
+```powershell
+net stop w3svc
+```
+Para volverlo a activar: `net start w3svc`
 
-**Opción B** — Cambiar el puerto del proyecto:
-Abre `docker-compose.yml` y cambia `"80:80"` por `"8080:80"` en el servicio `nginx`. Luego accede a `http://localhost:8080`.
+**Opción B** — Cambiar el puerto del proyecto (sin tocar Windows):
+Abre `docker-compose.yml` y busca el servicio `nginx`. Cambia `"80:80"` por `"8080:80"`:
+```yaml
+ports:
+  - "8080:80"   # antes era "80:80"
+```
+Luego accede a `http://localhost:8080` en vez de `http://localhost`.
+
+---
 
 ### El puerto 3306 está ocupado (MySQL instalado en Windows)
 
-Si tienes MySQL instalado directamente en Windows, ocupa el puerto 3306. Opciones:
+Si tienes MySQL instalado directamente en Windows (no en Docker), ocupa el puerto 3306.
 
-**Opción A** — Para el MySQL de Windows:
-- Abre el Administrador de tareas → Servicios → busca `MySQL` → clic derecho → Detener
+**Opción A** — Parar el MySQL de Windows:
+- Abre el **Administrador de tareas** → pestaña "Servicios" → busca `MySQL` o `MySQL80` → clic derecho → "Detener"
 
 **Opción B** — Cambiar el puerto en `docker-compose.yml`:
-Cambia `"3306:3306"` por `"3307:3306"` en el servicio `mysql`.
+```yaml
+# En el servicio mysql, cambia:
+ports:
+  - "3307:3306"   # antes era "3306:3306"
+```
 
-### Los contenedores no arrancan
+---
+
+### Los contenedores no arrancan tras `make setup`
 
 ```bash
-# Ver el error exacto
+# Ver el estado de todos los contenedores
+docker compose ps
+
+# Ver el error exacto de cada servicio
 docker compose logs php-fpm
 docker compose logs mysql
 docker compose logs nginx
 ```
 
-Lee el error — suele indicar exactamente qué falta.
+El log suele indicar exactamente qué falta. Los errores más comunes y sus soluciones están en la sección "Solución de problemas — Panel de administración" de este mismo documento.
+
+---
+
+### `make setup` falla a mitad por timeout de MySQL
+
+MySQL tarda en arrancar la primera vez. Si `make setup` falla con un error de conexión a la base de datos justo después de `docker compose up`, espera un poco y continúa manualmente:
+
+```bash
+# Esperar a que MySQL esté listo
+sleep 20
+
+# Continuar desde donde falló
+docker compose exec php-fpm composer install
+docker compose exec php-fpm php artisan key:generate
+docker compose exec php-fpm php artisan migrate
+docker compose exec php-fpm php artisan db:seed
+docker compose exec php-fpm php artisan storage:link
+docker compose exec php-fpm php artisan filament:assets
+```
+
+---
+
+### Permisos denegados al ejecutar comandos en WSL
+
+Si ves errores como `Permission denied` al ejecutar `make setup` o `docker compose exec`:
+
+```bash
+# Comprobar que eres el propietario del directorio del proyecto
+ls -la ~/proyectos/
+
+# Si los archivos son de root, arreglarlo:
+sudo chown -R $USER:$USER ~/proyectos/WebRoblox
+```
+
+---
 
 ### Borrar todo y empezar de cero
 
 ```bash
 # ⚠️ ATENCIÓN: esto borra todos los datos de la base de datos
-docker compose down -v
-make setup
+docker compose down -v    # para contenedores Y borra los volúmenes (BD)
+make setup                # reconstruye todo desde cero
+make admin-user           # volver a crear el usuario administrador
 ```
+
+---
 
 ### El navegador muestra "This site can't be reached"
 
-1. Comprueba que los contenedores están corriendo: `docker compose ps`
-2. Todos deben aparecer con estado `running`. Si alguno aparece como `exited`, consulta sus logs.
-3. Espera 30 segundos después de `docker compose up` — MySQL tarda un poco en arrancar.
+1. Comprueba que los contenedores están corriendo:
+   ```bash
+   docker compose ps
+   ```
+   Todos deben aparecer con estado `running`. Si alguno aparece como `exited`, consulta sus logs.
+
+2. Espera 30 segundos después de `docker compose up` — MySQL tarda un poco en arrancar la primera vez.
+
+3. Comprueba que Docker Desktop sigue ejecutándose (icono de la ballena en la barra de tareas de Windows).
+
+---
+
+### Editar archivos del proyecto desde Windows
+
+Puedes editar los archivos del proyecto con **VS Code** desde Windows, con acceso directo al sistema de archivos de WSL:
+
+1. Instala la extensión **"WSL"** en VS Code
+2. En la terminal Ubuntu, dentro de la carpeta del proyecto:
+   ```bash
+   code .
+   ```
+3. VS Code se abrirá con acceso al sistema de archivos de Linux. Los cambios que hagas se guardan directamente en WSL, sin problemas de permisos.
 
 ---
 

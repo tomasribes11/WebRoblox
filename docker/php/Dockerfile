@@ -41,6 +41,10 @@ RUN addgroup -g 1000 appgroup && adduser -u 1000 -G appgroup -s /bin/bash -D app
 WORKDIR /var/www/html
 
 # Give ownership to the non-root user
-RUN chown -R appuser:appgroup /var/www/html
+# Also pre-create directories that will be used as named volumes so they get
+# correct ownership even on a fresh volume (Docker volumes default to root:root).
+RUN chown -R appuser:appgroup /var/www/html && \
+    mkdir -p /var/www/html/vendor /var/www/html/bootstrap/cache /var/www/html/storage && \
+    chown -R appuser:appgroup /var/www/html/vendor /var/www/html/bootstrap/cache /var/www/html/storage
 
 USER appuser
