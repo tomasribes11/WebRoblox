@@ -33,23 +33,43 @@ cp .env.example .env
 | `DB_PASSWORD` | Contraseña MySQL | Tu contraseña del `.env` raíz |
 | `SANCTUM_TOKEN_EXPIRATION` | Minutos hasta expirar el token | `10080` (7 días) |
 
+> **Importante:** Si la contraseña contiene el carácter `#`, debes ponerla entre comillas dobles en el archivo `.env`. Sin comillas, todo lo que va después del `#` se interpreta como comentario y la contraseña queda truncada:
+> ```env
+> # MAL — la contraseña efectiva sería solo "miPass"
+> DB_PASSWORD=miPass#123
+>
+> # BIEN — la contraseña completa es "miPass#123"
+> DB_PASSWORD="miPass#123"
+> ```
+
 ## Comandos de configuración inicial
 
-Ejecuta estos comandos **dentro del contenedor Docker** (solo la primera vez):
+Ejecuta estos comandos **dentro del contenedor Docker** (solo la primera vez). El comando `make setup` los ejecuta todos automáticamente, pero si necesitas hacerlo paso a paso:
 
 ```bash
-# Generar la clave de la aplicación
+# 1. Instalar dependencias PHP (vendor/)
+docker compose exec php-fpm composer install
+
+# 2. Generar la clave de la aplicación
 docker compose exec php-fpm php artisan key:generate
 
-# Crear todas las tablas en la base de datos
+# 3. Crear todas las tablas en la base de datos
 docker compose exec php-fpm php artisan migrate
 
-# Rellenar con los 15 artículos iniciales
+# 4. Rellenar con los 15 artículos iniciales
 docker compose exec php-fpm php artisan db:seed
 
-# Crear el usuario administrador
-docker compose exec php-fpm php artisan make:filament-user
+# 5. Crear el enlace simbólico storage/ → public/storage/ (necesario para subir imágenes)
+docker compose exec php-fpm php artisan storage:link
+
+# 6. Publicar los assets CSS/JS del panel admin en public/
+docker compose exec php-fpm php artisan filament:assets
+
+# 7. Crear el usuario administrador (interactivo)
+make admin-user
 ```
+
+> Si añades nuevas dependencias a `composer.json`, ejecuta de nuevo `composer install` dentro del contenedor.
 
 ## API Reference
 
@@ -117,4 +137,51 @@ docker compose exec php-fpm ./vendor/bin/pint
 
 ```bash
 docker compose exec php-fpm php artisan test
+# O con el atajo:
+make test-backend
+```
+
+---
+
+## Problemas conocidos y soluciones
+
+### El panel admin carga sin CSS/JS
+
+Filament publica sus assets en `public/js/filament/` y `public/css/filament/`. Nginx debe servirlos directamente (no proxiarlos a Vite). Si los estilos no cargan:
+
+```bash
+# Re-publicar los assets
+docker compose exec php-fpm php artisan filament:assets
+
+# Reiniciar nginx
+docker compose restart nginx
+```
+
+### El formulario de login devuelve "Method Not Allowed"
+
+El panel de admin usa **Livewire** para el formulario de login. Si el JS de Livewire no carga, el formulario hace un POST HTML directo a `/admin/login` (que solo acepta GET). Nginx debe enrutar `/livewire/*` a PHP. Comprueba que la configuración de nginx incluye:
+
+```nginx
+location ^~ /livewire/ {
+    try_files $uri /index.php?$query_string;
+}
+```
+
+Reinicia nginx después de cualquier cambio en su configuración: `docker compose restart nginx`.
+
+### El directorio `vendor/` no tiene permisos de escritura
+
+Los volúmenes Docker se crean con propietario `root` por defecto. El contenedor PHP corre como `appuser` (UID 1000). Si `composer install` falla con errores de permisos:
+
+```bash
+docker compose exec --user root php-fpm chown -R appuser:appgroup /var/www/html/vendor
+```
+
+### `bootstrap/cache` no existe
+
+Este directorio está en `.gitignore` y no se crea al clonar. Si `composer install` o `artisan` falla mencionando `bootstrap/cache`:
+
+```bash
+mkdir -p backend/bootstrap/cache
+docker compose exec --user root php-fpm chown -R appuser:appgroup /var/www/html/bootstrap/cache
 ```
