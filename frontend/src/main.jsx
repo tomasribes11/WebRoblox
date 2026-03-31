@@ -10,6 +10,9 @@ import App from './App'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/custom.css'
 
+// Bootstrap JS (required for dropdown functionality)
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+
 // i18n initialization (must run before any component renders)
 import './i18n'
 
