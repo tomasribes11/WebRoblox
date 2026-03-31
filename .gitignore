@@ -16,6 +16,7 @@ backend/storage/logs/*
 backend/storage/framework/cache/
 backend/storage/framework/sessions/
 backend/storage/framework/views/
+backend/public/index.php
 
 # macOS
 .DS_Store
