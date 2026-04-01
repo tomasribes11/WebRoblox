@@ -118,6 +118,38 @@ All article endpoints accept `?locale=es|en|fr`.
 5. Frontend development happens at `http://localhost:5173`
 6. Admin panel available at `http://localhost/admin`
 
+### Windsurf Configuration (Docker + WSL + PowerShell 7)
+
+#### Perfiles de Terminal Configurados:
+- **PowerShell**: Terminal principal Windows (pwsh.exe)
+- **WSL**: Terminal Ubuntu nativo (wsl.exe -d Ubuntu)
+- **Docker**: Terminal dentro contenedor PHP-FPM
+
+#### Atajos de Teclado:
+- **Ctrl+Shift+D**: Iniciar servicios Docker
+- **Ctrl+Shift+S**: Detener servicios Docker  
+- **Ctrl+Shift+L**: Ver logs Docker
+- **Ctrl+Shift+M**: Ejecutar migraciones Laravel
+- **Ctrl+Shift+T**: Ejecutar tests Laravel
+- **Ctrl+Shift+F**: Fix code style PHP
+- **Ctrl+Shift+B**: Abrir terminal PHP container
+
+#### Tasks Automatizados:
+- Docker: Start/Stop/View Logs
+- Laravel: Migrations/Tests/Code Style/Shell
+- Node: Install dependencies/Build frontend
+- Make: Project setup
+
+#### Debug Configurado:
+- Xdebug integrado con contenedor PHP
+- Path mappings para /var/www/html → backend/
+- Configuraciones para Laravel Artisan y Tests
+
+#### Workflows Disponibles:
+- `/docker-setup`: Configuración completa entorno Docker
+- `/laravel-development`: Flujo desarrollo Laravel
+- `/react-development`: Flujo desarrollo React
+
 ### Code Style Guidelines
 - PHP: Follow PSR-12, use Laravel Pint (`make pint`)
 - JavaScript/React: Use ES6+ syntax, functional components with hooks

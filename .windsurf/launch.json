@@ -1,0 +1,66 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Docker: Listen for PHP Xdebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9003,
+      "pathMappings": {
+        "/var/www/html": "${workspaceFolder}/backend"
+      },
+      "xdebugSettings": {
+        "max_depth": 3
+      }
+    },
+    {
+      "name": "Docker: Laravel Tests",
+      "type": "php",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/artisan",
+      "args": [
+        "test",
+        "--filter",
+        "${selection}"
+      ],
+      "cwd": "${workspaceFolder}/backend",
+      "port": 9003,
+      "pathMappings": {
+        "/var/www/html": "${workspaceFolder}/backend"
+      },
+      "runtimeArgs": [
+        "-dxdebug.mode=debug",
+        "-dxdebug.start_with_request=yes",
+        "-dxdebug.client_port=9003"
+      ]
+    },
+    {
+      "name": "Docker: Laravel Artisan",
+      "type": "php",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/artisan",
+      "args": [
+        "${command:Args}"
+      ],
+      "cwd": "${workspaceFolder}/backend",
+      "port": 9003,
+      "pathMappings": {
+        "/var/www/html": "${workspaceFolder}/backend"
+      },
+      "runtimeArgs": [
+        "-dxdebug.mode=debug",
+        "-dxdebug.start_with_request=yes",
+        "-dxdebug.client_port=9003"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Docker: Launch Laravel with Xdebug",
+      "configurations": [
+        "Docker: Listen for PHP Xdebug"
+      ],
+      "stopAll": true
+    }
+  ]
+}

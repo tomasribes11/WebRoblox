@@ -1,0 +1,60 @@
+{
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "path": "pwsh.exe",
+      "icon": "terminal-powershell",
+      "args": ["-ExecutionPolicy", "Bypass"]
+    },
+    "WSL": {
+      "path": "wsl.exe",
+      "args": ["-d", "Ubuntu", "--cd", "${workspaceFolder}"],
+      "icon": "terminal-linux"
+    },
+    "Docker": {
+      "path": "wsl.exe",
+      "args": ["-d", "Ubuntu", "--cd", "${workspaceFolder}", "-e", "docker compose exec php-fpm bash"],
+      "icon": "terminal-docker"
+    }
+  },
+  "terminal.integrated.commandsToSkipShell": [
+    "workbench.action.terminal.focusPrevious",
+    "workbench.action.terminal.focusNext",
+    "workbench.action.terminal.split",
+    "workbench.action.terminal.unsplit",
+    "workbench.action.terminal.resizePane"
+  ],
+  "files.exclude": {
+    "**/vendor": true,
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/storage/logs": true,
+    "**/bootstrap/cache": true
+  },
+  "search.exclude": {
+    "**/vendor": true,
+    "**/node_modules": true,
+    "**/storage": true,
+    "**/bootstrap/cache": true
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "php.executablePath": "${workspaceFolder}/backend/vendor/bin/php",
+  "php.validate.executablePath": "${workspaceFolder}/backend/vendor/bin/php",
+  "laravel.path": "${workspaceFolder}/backend",
+  "docker.compose.command": "docker compose",
+  "docker.compose.ymlPath": "${workspaceFolder}/docker-compose.yml",
+  "docker.files.exclude": [
+    "**/.gitignore",
+    "**/.git/**",
+    "**/README.md",
+    "**/LICENSE",
+    "**/.env.example"
+  ],
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.autoImports": true,
+  "javascript.preferences.includePackageJsonAutoImports": "on",
+  "javascript.suggest.autoImports": true
+}
